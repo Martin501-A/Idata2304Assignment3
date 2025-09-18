@@ -1,13 +1,12 @@
 import socket
 
 class Server:
-    """Represents a tcp server with ipv4 ip that handles clients for the network with a single socket"""
+    """Represents a tcp server with ipv4 ip that holds clients for the network with a single socket"""
 
     def __init__(self, host):
         """Creates a Server with a host ip address"""
         self.host = host
         self.createSocket()
-        self.clients = []
 
     def createSocket(self):
         """Creates the socket for the server"""
@@ -26,15 +25,11 @@ class Server:
         """Accepts a connection and returns the connection and connection address"""
         conn, addr = self.socket.accept()
         print(f"Connection accepted from {self.host}")
-        self.clients.append((conn, addr))
         return conn, addr
 
     def closeConnection(self, conn):
         """Closes the connection and removes it from the clientlist"""
-        for i in self.clients:
-            if i[0] == conn:
-                i[0].close()
-                self.clients.remove(i)
+        conn.close()
 
     def handleClient(self, conn):
         """Handles a client connection by sending a the message back to the client.

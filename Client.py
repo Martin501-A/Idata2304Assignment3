@@ -4,8 +4,8 @@ import socket
 class Client:
     """Represents a tcp client with ipv4 ip in a computer network with a single socket"""
 
-    def __init__(self, ipType, transportProtocol):
-        self.createSocket(ipType, transportProtocol)
+    def __init__(self):
+        self.createSocket(socket.AF_INET, socket.SOCK_STREAM)
 
     def createSocket(self, ipType, transportProtocol):
         """Creates a Socket object with a ip protocol(IP Address) and a transport protocol(Transport layer)"""
@@ -32,9 +32,7 @@ class Client:
         return self.socket
 
 def main():
-    ipType = socket.AF_INET
-    transportProtocol = socket.SOCK_STREAM
-    client = Client(ipType, transportProtocol)
+    client = Client()
     host = "127.0.0.1"
     port = 65432
     message = ("Hello World")
