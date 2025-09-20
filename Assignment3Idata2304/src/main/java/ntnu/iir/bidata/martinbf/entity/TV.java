@@ -1,6 +1,5 @@
 package ntnu.iir.bidata.martinbf.entity;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,20 +47,24 @@ public class TV {
    * Change to the next channel. If at the end of the list, wrap around to the first channel.
    */
   public void nextChannel() {
-    channelIterator.next();
+    if (this.powerStatus) {
+      channelIterator.next();
+    }
   }
 
   /**
    * Change to the previous channel. If at the beginning of the list, wrap around to the last channel.
    */
   public void previousChannel() {
-    channelIterator.previous();
+    if (this.powerStatus) {
+      channelIterator.previous();
+    }
   }
 
   /**
    * Get the current power status of the TV.
    */
-  public boolean isOn() {
+  public boolean getPowerStatus() {
     return powerStatus;
   }
 
@@ -76,7 +79,10 @@ public class TV {
    * Get the current channel being viewed.
    */
   public Channel getCurrentChannel() {
-    return channelIterator.current();
+    if (powerStatus) {
+      return channelIterator.current();
+    }
+    return Channel.NONE;
   }
 
 }
