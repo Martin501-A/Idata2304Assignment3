@@ -34,8 +34,8 @@ class Client:
 def main():
     client = Client()
     host = "127.0.0.1"
-    port = 65432
-    message = ("Hello World")
+    port = 1238
+    message = ("TURN ON")
     try:
         client.connectToServer(host, port)
         client.sendData(message)

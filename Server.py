@@ -19,7 +19,7 @@ class Server:
     def listenForConnection(self):
         """Listens for a connection"""
         self.socket.listen()
-        print(f"Server listening on {self.host}")
+        print(f"Server listening on {self.socket.getsockname()}")
 
     def acceptConnection(self):
         """Accepts a connection and returns the connection and connection address"""

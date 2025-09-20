@@ -38,5 +38,15 @@ class TV:
     def setActiveChannel(self, channel):
         if channel < len(self.channels):
             self.activeChannel = self.channels[channel]
-            return 1
-        return 0
+            return True
+        return False
+
+    def setNextChannel(self):
+        """Sets the active channel next channel"""
+        self.activeChannel = self.channels[(self.activeChannel+1)%len(self.channels)]
+        return True
+
+    def setPreviousChannel(self):
+        """Sets the active channel to the previous channel"""
+        self.activeChannel = self.channels[(self.activeChannel-1)%len(self.channels)]
+        return True
