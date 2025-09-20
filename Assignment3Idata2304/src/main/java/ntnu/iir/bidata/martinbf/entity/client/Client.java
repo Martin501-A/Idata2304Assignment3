@@ -1,16 +1,11 @@
-package ntnu.iir.bidata.martinbf.entity;
-
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
+package ntnu.iir.bidata.martinbf.entity.client;
 
 /**
  * Represents a client in a computer network.
  * S is the type of socket used by the client (e.g., Socket for TCP, DatagramSocket for UDP).
  * The client can connect to a server and communicate over a socket.
  */
-public interface Client<S> {
+public interface Client {
 
   /**
    * Creates a socket.
@@ -42,10 +37,4 @@ public interface Client<S> {
    */
   void recieveData(Integer bufferSize);
 
-  /**
-   * Gets the socket used by the client.
-   *
-   * @return the socket
-   */
-  S getSocket();
 }

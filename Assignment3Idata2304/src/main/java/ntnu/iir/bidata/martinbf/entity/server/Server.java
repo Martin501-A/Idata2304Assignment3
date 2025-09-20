@@ -1,29 +1,19 @@
-package ntnu.iir.bidata.martinbf.entity;
+package ntnu.iir.bidata.martinbf.entity.server;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 /**
  * Represents a server in a computer network.
  * The server can accept connections from clients and communicate over a socket.
  * The server can be implemented for different protocols (e.g., TCP, UDP).
  */
-public interface Server<S> {
+public interface Server {
 
   /**
    * Creates a socket.
    */
-  void createSocket();
-
-  /**
-   * Binds the socket to a specific port.
-   *
-   * @param port the port number to bind the socket to
-   */
-  void bind(int port);
-
-  /**
-   * Listens for incoming connections (for TCP).
-   *
-   */
-  void listen();
+  void createSocket(InetAddress address, int port) throws IOException;
 
   /**
    * Accepts a connection from a client (for TCP).
@@ -53,13 +43,5 @@ public interface Server<S> {
     * Handles client connections.
    */
   void handleClient();
-
-  /**
-   * Gets the socket used by the server.
-   *
-   * @return the socket
-   */
-  S getSocket();
-
 
 }
