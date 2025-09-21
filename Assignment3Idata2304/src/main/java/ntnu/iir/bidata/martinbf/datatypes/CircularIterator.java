@@ -1,4 +1,6 @@
-package ntnu.iir.bidata.martinbf.entity;
+package ntnu.iir.bidata.martinbf.datatypes;
+
+import ntnu.iir.bidata.martinbf.exception.IllegalIterationException;
 
 import java.util.Iterator;
 import java.util.List;

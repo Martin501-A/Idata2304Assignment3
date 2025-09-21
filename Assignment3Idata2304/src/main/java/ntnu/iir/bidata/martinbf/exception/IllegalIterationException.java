@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.entity;
+package ntnu.iir.bidata.martinbf.exception;
 
 /**
  * Exception thrown when an illegal iteration is attempted.

@@ -2,6 +2,7 @@ package ntnu.iir.bidata.martinbf.entity.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 
 /**
  * Represents a server in a computer network.
@@ -18,12 +19,12 @@ public interface Server {
   /**
    * Accepts a connection from a client (for TCP).
    */
-  void acceptConnection();
+  Socket acceptConnection() throws IOException;
 
   /**
    * Closes the socket.
    */
-  void closeSocket();
+  void closeSocket() throws IOException;
 
   /**
    * Sends data to a client.

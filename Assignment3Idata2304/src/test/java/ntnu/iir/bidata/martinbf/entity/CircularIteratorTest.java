@@ -1,5 +1,7 @@
 package ntnu.iir.bidata.martinbf.entity;
 
+import ntnu.iir.bidata.martinbf.datatypes.CircularIterator;
+import ntnu.iir.bidata.martinbf.exception.IllegalIterationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
