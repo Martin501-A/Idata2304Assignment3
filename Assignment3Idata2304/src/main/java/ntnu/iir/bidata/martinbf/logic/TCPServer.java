@@ -1,7 +1,6 @@
-package ntnu.iir.bidata.martinbf.entity.server;
+package ntnu.iir.bidata.martinbf.logic;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.*;
 
