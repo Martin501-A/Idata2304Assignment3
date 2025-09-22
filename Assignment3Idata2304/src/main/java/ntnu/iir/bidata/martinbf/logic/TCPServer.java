@@ -18,7 +18,6 @@ public class TCPServer extends Thread {
     this.socket = new ServerSocket();
   }
 
-
   /**
    * Accepts a connection from a client.
    *
@@ -29,39 +28,12 @@ public class TCPServer extends Thread {
     return this.socket.accept();
   }
 
-
-
   /**
    * Closes the TCP socket.
    */
   public void closeSocket() throws IOException {
       this.socket.close();
   }
-
-  /**
-   * Sends data to a client over TCP.
-   *
-   * @param socket the socket to send data to
-    * @param data the data to send
-   */
-  public void sendData(Socket socket, byte[] data) {
-    try (OutputStream outputStream = socket.getOutputStream()) {
-      outputStream.write(data);
-      outputStream.flush();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Receives data from a client over TCP.
-   *
-   * @param socket the socket to receive data from
-   * @return the received data
-   */
-  public byte[] receiveData(Socket socket) {
-
-    }
 
   /**
    * Gets the TCP socket.
