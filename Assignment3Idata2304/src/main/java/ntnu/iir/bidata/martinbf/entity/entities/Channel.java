@@ -9,9 +9,7 @@ public enum Channel {
   TVNorge("TVNorge"),
   NONE("NONE");
 
-
   private final String name;
-
 
   Channel(String name) {
     this.name = name;

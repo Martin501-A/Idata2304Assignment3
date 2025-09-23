@@ -1,7 +1,6 @@
 package ntnu.iir.bidata.martinbf.logic;
 
 import ntnu.iir.bidata.martinbf.entity.entities.Channel;
-import ntnu.iir.bidata.martinbf.entity.entities.Remote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
