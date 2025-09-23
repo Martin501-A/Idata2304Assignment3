@@ -54,7 +54,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version> <!-- Use a recent version -->
                 <configuration>
-                    <mainClass>ntnu.iir.bidata.martinbf.Main</mainClass> <!-- Replace with your main class -->
+                    <mainClass>ntnu.iir.bidata.martinbf.MainRemote</mainClass> <!-- Replace with your main class -->
                 </configuration>
             </plugin>
         </plugins>
