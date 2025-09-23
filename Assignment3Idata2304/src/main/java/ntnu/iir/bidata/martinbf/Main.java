@@ -15,6 +15,7 @@ public class Main {
       try (TVServer tvServer = new TVServer(port)) {
         tvServer.start();
       } catch (IOException e) {
+        System.out.println(e.getMessage());
         TVServer.printErrorMessage();
       }
     }

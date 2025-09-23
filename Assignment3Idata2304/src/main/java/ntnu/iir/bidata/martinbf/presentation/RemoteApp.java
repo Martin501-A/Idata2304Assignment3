@@ -6,8 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ntnu.iir.bidata.martinbf.logic.Remote;
-import ntnu.iir.bidata.martinbf.logic.TVRemoteClient;
+import ntnu.iir.bidata.martinbf.entity.entities.Remote;
+import ntnu.iir.bidata.martinbf.logic.client.TCPRemoteClient;
 
 /**
  * Main class for the Remote Application.
@@ -15,15 +15,16 @@ import ntnu.iir.bidata.martinbf.logic.TVRemoteClient;
 public class RemoteApp extends Application {
 
   private Label channel;
+  private Remote remote;
 
   /**
    * Starts the JavaFX application.
    */
   @Override
   public void start(Stage primaryStage) {
-    Remote remote = new Remote();
+    this.remote = new Remote();
     RemoteController controller = new RemoteController(this,
-            new TVRemoteClient(remote, 1238));
+            new TCPRemoteClient(remote, 1238));
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);
@@ -45,6 +46,7 @@ public class RemoteApp extends Application {
    * Updates the UI.
    */
   public void update() {
+    this.channel.setText("Channel: " + remote.getCurrentChannel());
   }
 
   public static void main(String[] args) {

@@ -1,10 +1,10 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.entity.entities;
 
 public enum IPAddress {
 
 
 
-  SOCKET_ADDRESS("192.168.1.10");
+  SOCKET_ADDRESS("127.0.0.1"),;
 
   private final String address;
 

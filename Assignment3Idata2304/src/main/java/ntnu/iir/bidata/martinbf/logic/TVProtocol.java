@@ -1,6 +1,7 @@
 package ntnu.iir.bidata.martinbf.logic;
 
 import ntnu.iir.bidata.martinbf.entity.entities.Channel;
+import ntnu.iir.bidata.martinbf.entity.entities.Command;
 import ntnu.iir.bidata.martinbf.entity.entities.TV;
 
 /**

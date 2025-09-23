@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.entity.entities;
 
 /**
  * Represents the available commands for the TV protocol.

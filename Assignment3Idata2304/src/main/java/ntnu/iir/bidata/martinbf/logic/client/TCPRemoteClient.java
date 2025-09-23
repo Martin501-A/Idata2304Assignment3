@@ -1,6 +1,9 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.logic.client;
 
 import ntnu.iir.bidata.martinbf.entity.entities.Channel;
+import ntnu.iir.bidata.martinbf.entity.entities.Command;
+import ntnu.iir.bidata.martinbf.entity.entities.IPAddress;
+import ntnu.iir.bidata.martinbf.entity.entities.Remote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +14,7 @@ import java.net.Socket;
 /**
  * Represents the client that connects to the TV server.
  */
-public class TVRemoteClient {
+public class TCPRemoteClient implements TVRemoteClient {
   private Remote remote;
   private int port;
 
@@ -20,7 +23,7 @@ public class TVRemoteClient {
    *
    * @param remote
    */
-  public TVRemoteClient(Remote remote, int port) {
+  public TCPRemoteClient(Remote remote, int port) {
     if (remote == null) {
       throw new IllegalArgumentException("Remote cannot be null");
     }
@@ -34,11 +37,11 @@ public class TVRemoteClient {
   /**
    * Sends a command to the TV server that handles the response.
    */
-  public void sendCommand(Command command) {
+  public void protocol(Command command) {
     if (command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
-    try (Socket socket = new Socket("localhost", port);
+    try (Socket socket = new Socket(IPAddress.SOCKET_ADDRESS.getAddress(), this.port);
          PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
          BufferedReader in = new BufferedReader(
                  new InputStreamReader(socket.getInputStream()))) {

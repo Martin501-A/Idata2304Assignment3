@@ -1,10 +1,11 @@
 package ntnu.iir.bidata.martinbf.logic;
 
-import com.sun.prism.impl.paint.PaintUtil;
 import ntnu.iir.bidata.martinbf.entity.entities.Channel;
+import ntnu.iir.bidata.martinbf.entity.entities.IPAddress;
 import ntnu.iir.bidata.martinbf.entity.entities.TV;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.List;
 import java.util.Scanner;
@@ -25,7 +26,8 @@ public class TVServer implements AutoCloseable {
     }
     List<Channel> channels = List.of(Channel.values());
     this.tv = new TV(channels);
-    this.socket = new ServerSocket(port);
+    this.socket = new ServerSocket(port, 50,
+            InetAddress.getByName(IPAddress.SOCKET_ADDRESS.getAddress()));
   }
 
   /**
@@ -81,7 +83,7 @@ public class TVServer implements AutoCloseable {
   public void start() throws IOException {
     System.out.println("Server started, waiting for connections...");
     while (running) {
-        new TVServerThread(socket.accept(), tv).start();
+        new TVTCPThread(socket.accept(), tv).start();
         printTVStatus();
     }
   }

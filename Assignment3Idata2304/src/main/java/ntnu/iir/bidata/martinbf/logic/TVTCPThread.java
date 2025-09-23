@@ -1,5 +1,6 @@
 package ntnu.iir.bidata.martinbf.logic;
 
+import ntnu.iir.bidata.martinbf.entity.entities.Command;
 import ntnu.iir.bidata.martinbf.entity.entities.TV;
 
 import java.io.*;
@@ -8,7 +9,7 @@ import java.net.Socket;
 /**
  * Represents a server thread for handling TV-related operations.
  */
-public class TVServerThread extends Thread {
+public class TVTCPThread extends Thread {
   private Socket socket;
   private TV tv;
 
@@ -17,7 +18,7 @@ public class TVServerThread extends Thread {
    *
    * @param socket the socket to be used by the server thread
    */
-  public TVServerThread(Socket socket, TV tv) {
+  public TVTCPThread(Socket socket, TV tv) {
     super("TVServerThread");
     if (socket == null) {
       throw new IllegalArgumentException("Socket cannot be null");

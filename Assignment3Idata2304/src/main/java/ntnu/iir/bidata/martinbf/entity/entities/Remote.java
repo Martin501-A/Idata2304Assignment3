@@ -1,6 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic;
-
-import ntnu.iir.bidata.martinbf.entity.entities.Channel;
+package ntnu.iir.bidata.martinbf.entity.entities;
 
 /**
  * Represents a remote for a television.
