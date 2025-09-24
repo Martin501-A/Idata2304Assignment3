@@ -1,8 +1,9 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.logic.server;
 
 import ntnu.iir.bidata.martinbf.entity.entities.Channel;
 import ntnu.iir.bidata.martinbf.entity.entities.IPAddress;
 import ntnu.iir.bidata.martinbf.entity.entities.TV;
+import ntnu.iir.bidata.martinbf.logic.TVTCPThread;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,7 +11,7 @@ import java.net.ServerSocket;
 import java.util.List;
 import java.util.Scanner;
 
-public class TVServer implements AutoCloseable {
+public class TVTCPServer implements TVServer {
   private TV tv;
   private ServerSocket socket;
   private volatile boolean running = true;
@@ -20,7 +21,7 @@ public class TVServer implements AutoCloseable {
    *
    * @param port the port number to listen on (must be between 1024 and 65535)
    */
-  public TVServer(int port) throws IOException {
+  public TVTCPServer(int port) throws IOException {
     if (port < 1024 || port > 65535) {
       throw new IllegalArgumentException("Port must be between 1024 and 65535");
     }
@@ -44,32 +45,6 @@ public class TVServer implements AutoCloseable {
     return this.socket;
   }
 
-
-
-  /**
-   * Prints the TV status to the console.
-   */
-  public void printTVStatus() {
-    System.out.println("TV is " + (tv.getPowerStatus() ? "ON" : "OFF") +
-            ", Current Channel: " + tv.getCurrentChannel());
-  }
-
-  /**
-   * Takes a console input for the port number.
-   * If no number is given, the default port 1238 is used.
-   */
-  public static int getPortFromConsole() {
-    System.out.print("Enter port number (1024-65535): ");
-    Scanner s = new Scanner(System.in);
-    if (s.nextLine().isEmpty()) {
-      return 1238;
-    }
-    if (!s.hasNextLine()) {
-      return 1238;
-    }
-    return s.nextInt();
-  }
-
   /**
    * Print error message to console.
    */
@@ -84,7 +59,6 @@ public class TVServer implements AutoCloseable {
     System.out.println("Server started, waiting for connections...");
     while (running) {
         new TVTCPThread(socket.accept(), tv).start();
-        printTVStatus();
     }
   }
 

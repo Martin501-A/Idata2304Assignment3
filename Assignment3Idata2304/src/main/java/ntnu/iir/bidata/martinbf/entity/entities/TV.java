@@ -12,6 +12,7 @@ public class TV {
   private List<Channel> channels;
   private boolean powerStatus;
   private CircularIterator<Channel> channelIterator;
+  private List<TVSubscriber> subscribers;
 
 
 
@@ -86,5 +87,7 @@ public class TV {
     }
     return Channel.NONE;
   }
+
+
 
 }

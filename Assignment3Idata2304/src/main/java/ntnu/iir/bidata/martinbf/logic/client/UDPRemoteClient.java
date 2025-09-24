@@ -53,10 +53,9 @@ public class UDPRemoteClient implements TVRemoteClient {
       DatagramPacket responsePacket = new DatagramPacket(buffer, buffer.length);
       socket.receive(responsePacket);
       String response = new String(responsePacket.getData(), 0, responsePacket.getLength());
-      if (response != null) {
+      if (!response.isEmpty()) {
         remote.setCurrentChannel(Channel.valueOf(response));
       }
-
     } catch (IOException e) {
       e.printStackTrace();
     }
