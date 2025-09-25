@@ -19,10 +19,9 @@ public class Main {
     while (true) {
       int port = TVServerApp.getPortFromConsole();
       System.out.println("Starting server on port " + port);
-      TV tv = new TV(List.of(new Channel[]{Channel.NRK1,
-              Channel.NRK2,
-              Channel.TV2,
-              Channel.TVNorge,}));
+      List<Channel> channels = new java.util.ArrayList<>(List.of(Channel.values()));
+      channels.remove(Channel.NONE);
+      TV tv = new TV(channels);
       try (TVServer server = new TVTCPServer(port, tv)) {
         TVServerApp app = new TVServerApp(tv);
         TVServerController controller = new TVServerController(server, app);
