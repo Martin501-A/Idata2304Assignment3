@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntnu.iir.bidata.martinbf.entity.Remote;
 import ntnu.iir.bidata.martinbf.logic.client.TCPRemoteClient;
+import ntnu.iir.bidata.martinbf.logic.client.UDPRemoteClient;
 
 /**
  * Main class for the Remote Application.
@@ -24,7 +25,7 @@ public class RemoteApp extends Application {
   public void start(Stage primaryStage) {
     this.remote = new Remote();
     RemoteController controller = new RemoteController(this,
-            new TCPRemoteClient(remote, 1238));
+            new UDPRemoteClient(remote, 1238));
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);

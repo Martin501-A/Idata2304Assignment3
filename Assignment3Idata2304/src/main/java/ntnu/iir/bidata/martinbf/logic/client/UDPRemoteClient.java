@@ -14,7 +14,7 @@ import java.net.*;
 public class UDPRemoteClient implements TVRemoteClient {
   private Remote remote;
   private int port;
-  private SocketAddress socketAddress;
+  private SocketAddress tvAddress;
 
 
   /**
@@ -29,7 +29,7 @@ public class UDPRemoteClient implements TVRemoteClient {
     }
     this.remote = remote;
     this.port = port;
-    this.socketAddress = new InetSocketAddress(IPAddress.SOCKET_ADDRESS.getAddress(), port);
+    this.tvAddress = new InetSocketAddress(IPAddress.ServerAddress.getAddress(), port);
   }
 
 
@@ -43,10 +43,10 @@ public class UDPRemoteClient implements TVRemoteClient {
     }
 
     try (DatagramSocket socket = new DatagramSocket(
-            this.socketAddress);
+            new InetSocketAddress(IPAddress.BroadcastAddress.getAddress(), port));
     ) {
       byte[] data = command.toString().getBytes();
-      DatagramPacket packet = new DatagramPacket(data, data.length, this.socketAddress);
+      DatagramPacket packet = new DatagramPacket(data, data.length, this.tvAddress);
       socket.send(packet);
 
       byte[] buffer = new byte[data.length];

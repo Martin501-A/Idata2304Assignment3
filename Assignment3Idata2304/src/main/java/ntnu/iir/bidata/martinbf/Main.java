@@ -4,6 +4,7 @@ import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.server.TVServer;
 import ntnu.iir.bidata.martinbf.logic.server.TVTCPServer;
+import ntnu.iir.bidata.martinbf.logic.server.TVUDPServer;
 import ntnu.iir.bidata.martinbf.presentation.TVServerApp;
 import ntnu.iir.bidata.martinbf.presentation.TVServerController;
 
@@ -21,7 +22,7 @@ public class Main {
                               Channel.NRK2,
                               Channel.TV2,
                               Channel.TVNorge,}));
-      try (TVServer server = new TVTCPServer(port, tv)) {
+      try (TVServer server = new TVUDPServer(port, tv)) {
         TVServerApp app = new TVServerApp(tv);
         TVServerController controller = new TVServerController(server, app);
         app.Start();

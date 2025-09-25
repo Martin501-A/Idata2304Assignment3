@@ -5,9 +5,7 @@ import ntnu.iir.bidata.martinbf.logic.Command;
 import ntnu.iir.bidata.martinbf.logic.TVProtocol;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -16,7 +14,9 @@ import java.nio.charset.StandardCharsets;
 public class TVUDPServer implements TVServer {
   private final TV tv;
   private DatagramSocket socket;
+  private SocketAddress remoteAddress;
   private volatile boolean running = true;
+
 
   /**
    * Creates a new TVUDPServer.
@@ -30,7 +30,8 @@ public class TVUDPServer implements TVServer {
     }
     this.tv = tv;
     this.socket = new DatagramSocket(port,
-            InetAddress.getByName(IPAddress.SOCKET_ADDRESS.getAddress()));
+            InetAddress.getByName(IPAddress.ServerAddress.getAddress()));
+    this.remoteAddress = new InetSocketAddress(IPAddress.BroadcastAddress.getAddress(), port);
   }
 
 
@@ -68,14 +69,16 @@ public class TVUDPServer implements TVServer {
    */
   private void sendResponsePacket(String response) {
     byte[] responseData = response.getBytes(StandardCharsets.UTF_8);
-    DatagramPacket responsePacket = new DatagramPacket(
-            responseData, responseData.length);
     try {
-      socket.send(responsePacket);
+      DatagramPacket responsePacket = new DatagramPacket(
+              responseData,
+              responseData.length,
+              this.remoteAddress);
+      this.socket.send(responsePacket);
     } catch (IOException e) {
       e.printStackTrace();
+    }
   }
-
 
   /**
    * Closes the UDP server socket.

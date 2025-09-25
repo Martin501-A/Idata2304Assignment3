@@ -41,7 +41,7 @@ public class TCPRemoteClient implements TVRemoteClient {
     if (command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
-    try (Socket socket = new Socket(IPAddress.SOCKET_ADDRESS.getAddress(), this.port);
+    try (Socket socket = new Socket(IPAddress.ServerAddress.getAddress(), this.port);
          PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
          BufferedReader in = new BufferedReader(
                  new InputStreamReader(socket.getInputStream()))) {

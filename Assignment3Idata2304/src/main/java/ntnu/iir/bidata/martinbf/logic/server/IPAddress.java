@@ -4,7 +4,8 @@ public enum IPAddress {
 
 
 
-  SOCKET_ADDRESS("127.0.0.1"),;
+  ServerAddress("127.0.0.1"),
+  BroadcastAddress("127.0.0.2");
 
   private final String address;
 

@@ -26,7 +26,7 @@ public class TVTCPServer implements TVServer {
     List<Channel> channels = List.of(Channel.values());
     this.tv = tv;
     this.socket = new ServerSocket(port, 50,
-            InetAddress.getByName(IPAddress.SOCKET_ADDRESS.getAddress()));
+            InetAddress.getByName(IPAddress.ServerAddress.getAddress()));
   }
 
   /**
