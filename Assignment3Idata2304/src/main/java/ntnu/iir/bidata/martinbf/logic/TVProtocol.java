@@ -7,7 +7,6 @@ import ntnu.iir.bidata.martinbf.entity.TV;
  * Represents the TV protocol used for communication between a TV and a remote control.
  */
 public class TVProtocol {
-
   private final TV tv;
 
   /**
@@ -38,7 +37,7 @@ public class TVProtocol {
   /**
    * Handles commands when tv is off.
    */
-  public String handleOff(Command command) {
+  private String handleOff(Command command) {
     if (command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
@@ -53,7 +52,7 @@ public class TVProtocol {
   /**
    * Handles commands when tv is on.
    */
-  public String handleOn(Command command) {
+   private String handleOn(Command command) {
     if (command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
