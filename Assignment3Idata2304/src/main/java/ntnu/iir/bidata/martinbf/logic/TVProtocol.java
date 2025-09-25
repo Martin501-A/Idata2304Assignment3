@@ -70,7 +70,6 @@ public class TVProtocol {
           tv.previousChannel();
           yield tv.getCurrentChannel().toString();
         }
-        default -> Channel.NONE.toString();
       };
   }
 }

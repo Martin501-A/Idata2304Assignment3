@@ -45,27 +45,21 @@ public class UDPRemoteClient implements TVRemoteClient {
     if (command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
-
-    try (DatagramSocket socket = new DatagramSocket(new InetSocketAddress(
-            InetAddress.getByName("127.0.0.1"), 50065));
-    ) {
-      String message = command.toString() + " "
-              + socket.getLocalAddress().getHostAddress() + " " + socket.getLocalPort();
-      byte[] data = message.getBytes();
-      System.out.println(Arrays.toString(data)); // Debug print to verify data
-      DatagramPacket packet = new DatagramPacket(data, data.length, this.tvAddress);
-      socket.send(packet);
-      byte[] buffer = new byte[data.length];
-      System.out.printf(data.length + " bytes sent\n");
-      DatagramPacket responsePacket = new DatagramPacket(buffer, buffer.length);
-      socket.receive(responsePacket);
-      String response = new String(responsePacket.getData(), 0, responsePacket.getLength());
-      if (!response.isEmpty()) {
-        System.out.println(response);
-        remote.setCurrentChannel(Channel.valueOf(response));
+      try (DatagramSocket socket = new DatagramSocket();
+      ) {
+        String message = command.toString();
+        byte[] data = message.getBytes();
+        DatagramPacket packet = new DatagramPacket(data, data.length, this.tvAddress);
+        socket.send(packet);
+        byte[] buffer = new byte[1024];
+        DatagramPacket responsePacket = new DatagramPacket(buffer, buffer.length);
+        socket.receive(responsePacket);
+        String response = new String(responsePacket.getData(), 0, responsePacket.getLength());
+        if (!response.isEmpty()) {
+          remote.setCurrentChannel(Channel.valueOf(response));
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 }

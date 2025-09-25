@@ -27,7 +27,7 @@ public class RemoteApp extends Application {
   public void start(Stage primaryStage) {
     System.out.println("Starting RemoteApp");
     Scanner scanner = new Scanner(System.in);
-    System.out.print("Enter port(1024-65535): ");
+    System.out.print("Enter port of remote Server(1024-65535): ");
     int port = scanner.nextInt();
     scanner.nextLine();
     System.out.print("Enter IP address: ");

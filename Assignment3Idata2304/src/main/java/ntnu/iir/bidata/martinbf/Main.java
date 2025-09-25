@@ -18,10 +18,11 @@ public class Main {
   public static void main(String[] args) {
     while (true) {
       int port = TVServerApp.getPortFromConsole();
+      System.out.println("Starting server on port " + port);
       TV tv = new TV(List.of(new Channel[]{Channel.NRK1,
-                              Channel.NRK2,
-                              Channel.TV2,
-                              Channel.TVNorge,}));
+              Channel.NRK2,
+              Channel.TV2,
+              Channel.TVNorge,}));
       try (TVServer server = new TVUDPServer(port, tv)) {
         TVServerApp app = new TVServerApp(tv);
         TVServerController controller = new TVServerController(server, app);
@@ -29,6 +30,8 @@ public class Main {
       } catch (IOException e) {
         System.out.println(e.getMessage());
         TVServerApp.printErrorMessage();
+      } catch (IllegalArgumentException e) {
+        System.out.println("Please enter a valid port number between 1024 and 65535.");
       }
     }
   }

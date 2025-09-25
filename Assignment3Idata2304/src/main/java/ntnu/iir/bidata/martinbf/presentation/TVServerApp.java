@@ -60,13 +60,11 @@ public class TVServerApp implements TVSubscriber {
   public static int getPortFromConsole() {
     System.out.print("Enter port number (1024-65535): ");
     Scanner s = new Scanner(System.in);
-    if (s.nextLine().isEmpty()) {
+    String input = s.next();
+    if (input.isEmpty()) {
       return 1238;
     }
-    if (!s.hasNextLine()) {
-      return 1238;
-    }
-    return s.nextInt();
+    return Integer.parseInt(input);
   }
 
   /**
