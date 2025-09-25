@@ -1,7 +1,8 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.logic.server.threads;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Command;
-import ntnu.iir.bidata.martinbf.entity.entities.TV;
+import ntnu.iir.bidata.martinbf.entity.TV;
+import ntnu.iir.bidata.martinbf.logic.Command;
+import ntnu.iir.bidata.martinbf.logic.TVProtocol;
 
 import java.io.*;
 import java.net.Socket;

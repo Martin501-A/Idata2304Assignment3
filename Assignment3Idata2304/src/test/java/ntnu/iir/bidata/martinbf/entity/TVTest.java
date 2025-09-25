@@ -1,7 +1,5 @@
 package ntnu.iir.bidata.martinbf.entity;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Channel;
-import ntnu.iir.bidata.martinbf.entity.entities.TV;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ntnu.iir.bidata.martinbf.entity.entities.Remote;
+import ntnu.iir.bidata.martinbf.entity.Remote;
 import ntnu.iir.bidata.martinbf.logic.client.TCPRemoteClient;
 
 /**

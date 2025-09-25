@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.entity.entities;
+package ntnu.iir.bidata.martinbf.entity;
 
 /**
  * Represents a remote for a television.

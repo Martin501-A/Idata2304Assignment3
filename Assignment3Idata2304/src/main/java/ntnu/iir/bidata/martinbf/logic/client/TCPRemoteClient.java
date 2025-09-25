@@ -1,9 +1,9 @@
 package ntnu.iir.bidata.martinbf.logic.client;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Channel;
-import ntnu.iir.bidata.martinbf.entity.entities.Command;
-import ntnu.iir.bidata.martinbf.entity.entities.IPAddress;
-import ntnu.iir.bidata.martinbf.entity.entities.Remote;
+import ntnu.iir.bidata.martinbf.entity.Channel;
+import ntnu.iir.bidata.martinbf.logic.Command;
+import ntnu.iir.bidata.martinbf.logic.server.IPAddress;
+import ntnu.iir.bidata.martinbf.entity.Remote;
 
 import java.io.BufferedReader;
 import java.io.IOException;

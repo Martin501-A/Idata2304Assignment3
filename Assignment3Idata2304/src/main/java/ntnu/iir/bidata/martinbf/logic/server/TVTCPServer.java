@@ -1,15 +1,13 @@
 package ntnu.iir.bidata.martinbf.logic.server;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Channel;
-import ntnu.iir.bidata.martinbf.entity.entities.IPAddress;
-import ntnu.iir.bidata.martinbf.entity.entities.TV;
-import ntnu.iir.bidata.martinbf.logic.TVTCPThread;
+import ntnu.iir.bidata.martinbf.entity.Channel;
+import ntnu.iir.bidata.martinbf.entity.TV;
+import ntnu.iir.bidata.martinbf.logic.server.threads.TVTCPThread;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.List;
-import java.util.Scanner;
 
 public class TVTCPServer implements TVServer {
   private TV tv;
@@ -17,16 +15,16 @@ public class TVTCPServer implements TVServer {
   private volatile boolean running = true;
 
   /**
-   * Creates a new TV server that listens on the specified port.
+   * Creates a new TV server that listens on the specified port using tcp.
    *
    * @param port the port number to listen on (must be between 1024 and 65535)
    */
-  public TVTCPServer(int port) throws IOException {
+  public TVTCPServer(int port, TV tv) throws IOException {
     if (port < 1024 || port > 65535) {
       throw new IllegalArgumentException("Port must be between 1024 and 65535");
     }
     List<Channel> channels = List.of(Channel.values());
-    this.tv = new TV(channels);
+    this.tv = tv;
     this.socket = new ServerSocket(port, 50,
             InetAddress.getByName(IPAddress.SOCKET_ADDRESS.getAddress()));
   }
@@ -46,19 +44,11 @@ public class TVTCPServer implements TVServer {
   }
 
   /**
-   * Print error message to console.
-   */
-  public static void printErrorMessage() {
-    System.err.println("Error has happened please try to input port again to restart server.");
-  }
-
-  /**
    * Starts the TV server to accept incoming connections.
    */
   public void start() throws IOException {
-    System.out.println("Server started, waiting for connections...");
-    while (running) {
-        new TVTCPThread(socket.accept(), tv).start();
+    while (this.running) {
+        new TVTCPThread(this.socket.accept(), this.tv).start();
     }
   }
 
@@ -67,9 +57,9 @@ public class TVTCPServer implements TVServer {
    */
   @Override
   public void close() throws IOException {
-    running = false;
-    if (socket != null && !socket.isClosed()) {
-      socket.close();
+    this.running = false;
+    if (this.socket != null && !this.socket.isClosed()) {
+      this.socket.close();
     }
   }
 }

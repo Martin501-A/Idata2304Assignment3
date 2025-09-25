@@ -1,6 +1,6 @@
 package ntnu.iir.bidata.martinbf.logic.client;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Command;
+import ntnu.iir.bidata.martinbf.logic.Command;
 
 /**
  * Client for sending commands to a TV.

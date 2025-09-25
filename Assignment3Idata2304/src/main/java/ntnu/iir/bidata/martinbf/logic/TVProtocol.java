@@ -1,8 +1,7 @@
 package ntnu.iir.bidata.martinbf.logic;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Channel;
-import ntnu.iir.bidata.martinbf.entity.entities.Command;
-import ntnu.iir.bidata.martinbf.entity.entities.TV;
+import ntnu.iir.bidata.martinbf.entity.Channel;
+import ntnu.iir.bidata.martinbf.entity.TV;
 
 /**
  * Represents the TV protocol used for communication between a TV and a remote control.

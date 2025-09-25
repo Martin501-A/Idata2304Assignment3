@@ -1,6 +1,7 @@
-package ntnu.iir.bidata.martinbf.entity.entities;
+package ntnu.iir.bidata.martinbf.entity;
 
 import ntnu.iir.bidata.martinbf.datatypes.CircularIterator;
+import ntnu.iir.bidata.martinbf.logic.TVSubscriber;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class TV {
   public TV(List<Channel> channels) {
     this.powerStatus = false; // TV is initially off
     setChannels(channels);
+    this.subscribers = new LinkedList<>();
   }
 
   /**
@@ -44,6 +46,7 @@ public class TV {
    */
   public void power() {
     this.powerStatus = !this.powerStatus;
+    notifySubscribers();
   }
 
   /**
@@ -52,6 +55,7 @@ public class TV {
   public void nextChannel() {
     if (this.powerStatus) {
       channelIterator.next();
+      notifySubscribers();
     }
   }
 
@@ -61,6 +65,7 @@ public class TV {
   public void previousChannel() {
     if (this.powerStatus) {
       channelIterator.previous();
+      notifySubscribers();
     }
   }
 
@@ -88,6 +93,22 @@ public class TV {
     return Channel.NONE;
   }
 
+  /**
+   * Subscribe a TVSubscriber to this TV.
+   */
+  public void subscribe(TVSubscriber subscriber) {
+    if (subscriber == null) {
+      throw new IllegalArgumentException("Subscriber cannot be null");
+    }
+    this.subscribers.add(subscriber);
+  }
 
-
+  /**
+   * Notify all subscribers of a change in the TV state.
+   */
+  private void notifySubscribers() {
+    for (TVSubscriber subscriber : subscribers) {
+      subscriber.update();
+    }
+  }
 }

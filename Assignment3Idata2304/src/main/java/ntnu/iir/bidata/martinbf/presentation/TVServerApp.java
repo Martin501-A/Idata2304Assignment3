@@ -1,8 +1,9 @@
 package ntnu.iir.bidata.martinbf.presentation;
 
-import ntnu.iir.bidata.martinbf.entity.entities.TV;
+import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.TVSubscriber;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Scanner;
  */
 public class TVServerApp implements TVSubscriber {
   private TV tv;
+  private TVServerController controller;
 
   /**
    * Instantiates the TV server for a TV.
@@ -21,6 +23,18 @@ public class TVServerApp implements TVSubscriber {
       throw new IllegalArgumentException("TV cannot be null");
     }
     this.tv = tv;
+    this.tv.subscribe(this);
+  }
+
+  /**
+   * Starts the TV server application.
+   */
+  public void Start() throws IOException {
+    if (controller == null) {
+      throw new IllegalStateException("Controller cannot be null");
+    }
+    System.out.println("Server starting, waiting for connections...");
+    this.controller.startServer();
   }
 
   /**
@@ -42,7 +56,7 @@ public class TVServerApp implements TVSubscriber {
    * Takes a console input for the port number.
    * If no number is given, the default port 1238 is used.
    */
-  public int getPortFromConsole() {
+  public static int getPortFromConsole() {
     System.out.print("Enter port number (1024-65535): ");
     Scanner s = new Scanner(System.in);
     if (s.nextLine().isEmpty()) {
@@ -59,6 +73,23 @@ public class TVServerApp implements TVSubscriber {
    */
   public static void printErrorMessage() {
     System.err.println("Error has happened please try to input port again to restart server.");
+  }
+
+  /**
+   * Sets the controller for this app.
+   */
+  public void setController(TVServerController controller) {
+    if (controller == null) {
+      throw new IllegalArgumentException("Controller cannot be null");
+    }
+    this.controller = controller;
+  }
+
+  /**
+   * Gets the controller for this app.
+   */
+  public TVServerController getController() {
+    return this.controller;
   }
 
   /**

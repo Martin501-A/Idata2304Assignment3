@@ -1,6 +1,6 @@
 package ntnu.iir.bidata.martinbf.presentation;
 
-import ntnu.iir.bidata.martinbf.entity.entities.Command;
+import ntnu.iir.bidata.martinbf.logic.Command;
 import ntnu.iir.bidata.martinbf.logic.client.TVRemoteClient;
 
 /**
@@ -43,4 +43,6 @@ public class RemoteController {
     this.remote.protocol(Command.CHANNEL_DOWN);
     this.app.update();
   }
+
+
 }
