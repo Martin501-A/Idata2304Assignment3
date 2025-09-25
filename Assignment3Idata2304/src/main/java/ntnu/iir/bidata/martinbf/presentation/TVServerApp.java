@@ -43,6 +43,7 @@ public class TVServerApp implements TVSubscriber {
   public void printTVStatus() {
     System.out.println("TV is " + (tv.getPowerStatus() ? "ON" : "OFF") +
             ", Current Channel: " + tv.getCurrentChannel());
+    System.out.println("Channels available: " + tv.getChannels());
   }
 
   /**

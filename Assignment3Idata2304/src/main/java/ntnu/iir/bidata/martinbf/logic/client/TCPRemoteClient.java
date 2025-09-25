@@ -23,7 +23,7 @@ public class TCPRemoteClient implements TVRemoteClient {
    *
    * @param remote
    */
-  public TCPRemoteClient(Remote remote, int port) {
+  public TCPRemoteClient(Remote remote, int port, String address) {
     if (remote == null) {
       throw new IllegalArgumentException("Remote cannot be null");
     }

@@ -10,6 +10,8 @@ import ntnu.iir.bidata.martinbf.entity.Remote;
 import ntnu.iir.bidata.martinbf.logic.client.TCPRemoteClient;
 import ntnu.iir.bidata.martinbf.logic.client.UDPRemoteClient;
 
+import java.util.Scanner;
+
 /**
  * Main class for the Remote Application.
  */
@@ -23,9 +25,16 @@ public class RemoteApp extends Application {
    */
   @Override
   public void start(Stage primaryStage) {
+    System.out.println("Starting RemoteApp");
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter port(1024-65535): ");
+    int port = scanner.nextInt();
+    scanner.nextLine();
+    System.out.print("Enter IP address: ");
+    String ip = scanner.nextLine();
     this.remote = new Remote();
     RemoteController controller = new RemoteController(this,
-            new UDPRemoteClient(remote, 1238));
+            new UDPRemoteClient(remote, port, ip));
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);

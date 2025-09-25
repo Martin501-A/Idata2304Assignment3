@@ -4,8 +4,7 @@ public enum IPAddress {
 
 
 
-  ServerAddress("127.0.0.1"),
-  BroadcastAddress("127.0.0.2");
+  ServerAddress("127.0.0.1");
 
   private final String address;
 
