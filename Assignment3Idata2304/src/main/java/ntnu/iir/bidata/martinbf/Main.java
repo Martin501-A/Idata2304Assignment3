@@ -23,7 +23,7 @@ public class Main {
               Channel.NRK2,
               Channel.TV2,
               Channel.TVNorge,}));
-      try (TVServer server = new TVUDPServer(port, tv)) {
+      try (TVServer server = new TVTCPServer(port, tv)) {
         TVServerApp app = new TVServerApp(tv);
         TVServerController controller = new TVServerController(server, app);
         app.Start();

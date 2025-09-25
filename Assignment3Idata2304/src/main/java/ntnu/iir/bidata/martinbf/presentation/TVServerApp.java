@@ -58,13 +58,29 @@ public class TVServerApp implements TVSubscriber {
    * If no number is given, the default port 1238 is used.
    */
   public static int getPortFromConsole() {
-    System.out.print("Enter port number (1024-65535): ");
-    Scanner s = new Scanner(System.in);
-    String input = s.next();
-    if (input.isEmpty()) {
-      return 1238;
+    boolean success = false;
+    int port = 1238;
+    Scanner scanner = new Scanner(System.in);
+    while (!success) {
+      System.out.print("Enter port number (1024-65535) or press Enter for default (1238): ");
+      String input = scanner.nextLine();
+      if (input.isEmpty()) {
+        success = true;
+      } else {
+        try {
+          port = Integer.parseInt(input);
+          if (port < 1024 || port > 65535) {
+            System.out.println("Please enter a valid port number between 1024 and 65535.");
+
+          } else {
+            success = true;
+          }
+        } catch (NumberFormatException e) {
+          System.out.println("Invalid input. Please enter a numeric port number.");
+        }
+      }
     }
-    return Integer.parseInt(input);
+    return port;
   }
 
   /**

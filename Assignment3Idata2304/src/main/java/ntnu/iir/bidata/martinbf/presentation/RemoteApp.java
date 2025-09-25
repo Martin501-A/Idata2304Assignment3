@@ -26,15 +26,10 @@ public class RemoteApp extends Application {
   @Override
   public void start(Stage primaryStage) {
     System.out.println("Starting RemoteApp");
-    Scanner scanner = new Scanner(System.in);
-    System.out.print("Enter port of remote Server(1024-65535): ");
-    int port = scanner.nextInt();
-    scanner.nextLine();
-    System.out.print("Enter IP address: ");
-    String ip = scanner.nextLine();
+    int port = getPortFromConsole();
     this.remote = new Remote();
     RemoteController controller = new RemoteController(this,
-            new UDPRemoteClient(remote, port, ip));
+            new TCPRemoteClient(remote, port));
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);
@@ -50,6 +45,35 @@ public class RemoteApp extends Application {
     primaryStage.setScene(new javafx.scene.Scene(rootNode, 300, 250));
     primaryStage.setTitle("TV Remote");
     primaryStage.show();
+  }
+
+  /**
+   * Handles getting userInput for port number.
+   */
+  public static int getPortFromConsole() {
+    int port = 1238;
+    Scanner scanner = new Scanner(System.in);
+    boolean success = false;
+    while (!success) {
+      System.out.print("Enter port number of remote server (1024-65535)" +
+              " or press Enter for default (1238): ");
+      String input = scanner.nextLine();
+      if (input.isEmpty()) {
+        success = true;
+      } else {
+        try {
+          port = Integer.parseInt(input);
+          if (port >= 1024 && port <= 65535) {
+            success = true;
+          } else {
+            System.out.println("Port must be between 1024 and 65535.");
+          }
+        } catch (NumberFormatException e) {
+          System.out.println("Invalid input. Please enter a valid port number.");
+        }
+      }
+    }
+    return port;
   }
 
   /**

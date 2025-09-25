@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 
 /**
@@ -20,10 +21,8 @@ public class TCPRemoteClient implements TVRemoteClient {
 
   /**
    * Instantiates a new TV remote client with a remote.
-   *
-   * @param remote
    */
-  public TCPRemoteClient(Remote remote, int port, String address) {
+  public TCPRemoteClient(Remote remote, int port) {
     if (remote == null) {
       throw new IllegalArgumentException("Remote cannot be null");
     }
@@ -50,6 +49,8 @@ public class TCPRemoteClient implements TVRemoteClient {
       if (response != null) {
         remote.setCurrentChannel(Channel.valueOf(response));
       }
+    } catch (ConnectException e) {
+      System.err.println("Could not connect to server.");
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -24,7 +24,7 @@ public class UDPRemoteClient implements TVRemoteClient {
    * @param remote the remote to use.
    * @param port   the port to send on.
    */
-  public UDPRemoteClient(Remote remote, int port, String address) {
+  public UDPRemoteClient(Remote remote, int port) {
     if (remote == null) {
       throw new IllegalArgumentException("Remote cannot be null");
     }
@@ -47,6 +47,7 @@ public class UDPRemoteClient implements TVRemoteClient {
     }
       try (DatagramSocket socket = new DatagramSocket();
       ) {
+        socket.setSoTimeout(3000);
         String message = command.toString();
         byte[] data = message.getBytes();
         DatagramPacket packet = new DatagramPacket(data, data.length, this.tvAddress);
@@ -58,6 +59,8 @@ public class UDPRemoteClient implements TVRemoteClient {
         if (!response.isEmpty()) {
           remote.setCurrentChannel(Channel.valueOf(response));
         }
+      } catch (SocketTimeoutException e) {
+        System.err.println("No response from server, request timed out.");
       } catch (IOException e) {
         e.printStackTrace();
       }
