@@ -8,8 +8,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntnu.iir.bidata.martinbf.entity.Remote;
 import ntnu.iir.bidata.martinbf.logic.client.RemoteClient;
-import ntnu.iir.bidata.martinbf.logic.client.thread.TCPRemoteClientThread;
-import ntnu.iir.bidata.martinbf.logic.protocoltypes.TProtocol;
+import ntnu.iir.bidata.martinbf.logic.client.handler.RemoteHandler;
+import ntnu.iir.bidata.martinbf.logic.client.handler.ResponseHandler;
+import ntnu.iir.bidata.martinbf.logic.connectionprotocols.ConnectionProtocol;
+import ntnu.iir.bidata.martinbf.logic.connectionprotocols.TCPServerFinderProtocol;
+import ntnu.iir.bidata.martinbf.logic.connectionprotocols.UDPServerFinderProtocol;
 
 import java.util.Scanner;
 
@@ -29,9 +32,10 @@ public class RemoteApp extends Application {
     System.out.println("Starting RemoteApp");
     int port = getPortFromConsole();
     this.remote = new Remote();
-    TProtocol protocol = getProtocolFromUser();
+    ResponseHandler handler = new RemoteHandler(this.remote);
+    ConnectionProtocol protocol = getProtocolFromUser();
     RemoteController controller = new RemoteController(this,
-            new RemoteClient(port, remote, protocol));
+            new RemoteClient(port, handler, protocol));
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);
@@ -47,6 +51,26 @@ public class RemoteApp extends Application {
     primaryStage.setScene(new javafx.scene.Scene(rootNode, 300, 250));
     primaryStage.setTitle("TV Remote");
     primaryStage.show();
+  }
+
+  /**
+   * Returns the protocol chosen by the user.
+   */
+  private ConnectionProtocol getProtocolFromUser() {
+    Scanner scanner = new Scanner(System.in);
+      System.out.print("Choose protocol (UDPServerFinderProtocol, TCPServerFinderProtocol): ");
+      String input = scanner.nextLine();
+      ConnectionProtocol protocol;
+      if (input.equals("UDPServerFinderProtocol")) {
+        protocol = new TCPServerFinderProtocol();
+      } else if (input.equals("TCPServerFinderProtocol")) {
+        protocol = new UDPServerFinderProtocol();
+      } else {
+        System.out.println("Invalid input. Please enter 1 or 2.");
+        scanner.close();
+        protocol = getProtocolFromUser();
+    }
+      return protocol;
   }
 
   /**

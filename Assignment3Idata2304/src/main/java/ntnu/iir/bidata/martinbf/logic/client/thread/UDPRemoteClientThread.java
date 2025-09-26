@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.*;
 
 /**
- * Client for sending UDP commands to a remote UDP server.
+ * Client for sending UDPServerFinderProtocol commands to a remote UDPServerFinderProtocol server.
  */
 public class UDPRemoteClientThread extends Thread {
   private ResponseHandler handler;
@@ -16,7 +16,7 @@ public class UDPRemoteClientThread extends Thread {
 
 
   /**
-   * Instantiates the UDP client with the given remote and port.
+   * Instantiates the UDPServerFinderProtocol client with the given remote and port.
    *.
    * @param port   the port to send on.
    */
@@ -38,7 +38,7 @@ public class UDPRemoteClientThread extends Thread {
 
 
   /**
-   * Sends a command to the UDP server using this clients protocol.
+   * Sends a command to the UDPServerFinderProtocol server using this clients protocol.
    */
   @Override
   public void run() {

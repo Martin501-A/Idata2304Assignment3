@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Runs the TCP TV server application.
+ * Runs the TCPServerFinderProtocol TV server application.
  */
 public class Main {
   public static void main(String[] args) {

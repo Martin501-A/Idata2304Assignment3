@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Represents a UDP Server for the TV.
+ * Represents a UDPServerFinderProtocol Server for the TV.
  */
 public class TVUDPServer implements TVServer {
 
@@ -43,7 +43,7 @@ public class TVUDPServer implements TVServer {
 
 
   /**
-   * Starts the UDP server to listen for incoming commands.
+   * Starts the UDPServerFinderProtocol server to listen for incoming commands.
    */
   @Override
   public void start() throws IOException {
@@ -54,7 +54,7 @@ public class TVUDPServer implements TVServer {
   }
 
   /**
-   * Receives a UDP packet and processes the command.
+   * Receives a UDPServerFinderProtocol packet and processes the command.
    */
   private DataAndSocket recievePacket() {
     byte[] buffer = new byte[256];
@@ -76,7 +76,7 @@ public class TVUDPServer implements TVServer {
   }
 
   /**
-   * Sends a response UDP packet back to the client.
+   * Sends a response UDPServerFinderProtocol packet back to the client.
    */
   private void sendResponsePacket(DataAndSocket response) {
     try {
@@ -95,7 +95,7 @@ public class TVUDPServer implements TVServer {
   }
 
   /**
-   * Closes the UDP server socket.
+   * Closes the UDPServerFinderProtocol server socket.
    */
   @Override
   public void close() throws IOException {

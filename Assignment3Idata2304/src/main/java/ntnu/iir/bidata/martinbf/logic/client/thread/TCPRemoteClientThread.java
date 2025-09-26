@@ -61,8 +61,8 @@ public class TCPRemoteClientThread extends Thread {
       if (response != null) {
         handler.handle(response);
       }
-    } catch (IOException e) {
-      handler.handle(null);
+    } catch (Exception e) {
+      //TODO For now we just ignore exceptions
     }
   }
 }
