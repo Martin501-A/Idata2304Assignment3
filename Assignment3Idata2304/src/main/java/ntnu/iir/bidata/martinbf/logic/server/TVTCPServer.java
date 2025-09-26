@@ -2,7 +2,7 @@ package ntnu.iir.bidata.martinbf.logic.server;
 
 import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.entity.TV;
-import ntnu.iir.bidata.martinbf.logic.server.threads.TVTCPThread;
+import ntnu.iir.bidata.martinbf.logic.server.thread.TVTCPThread;
 
 import java.io.IOException;
 import java.net.InetAddress;

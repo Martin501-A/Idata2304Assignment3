@@ -7,8 +7,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntnu.iir.bidata.martinbf.entity.Remote;
-import ntnu.iir.bidata.martinbf.logic.client.TCPRemoteClient;
-import ntnu.iir.bidata.martinbf.logic.client.UDPRemoteClient;
+import ntnu.iir.bidata.martinbf.logic.client.RemoteClient;
+import ntnu.iir.bidata.martinbf.logic.client.thread.TCPRemoteClientThread;
+import ntnu.iir.bidata.martinbf.logic.protocoltypes.TProtocol;
 
 import java.util.Scanner;
 
@@ -28,8 +29,9 @@ public class RemoteApp extends Application {
     System.out.println("Starting RemoteApp");
     int port = getPortFromConsole();
     this.remote = new Remote();
+    TProtocol protocol = getProtocolFromUser();
     RemoteController controller = new RemoteController(this,
-            new TCPRemoteClient(remote, port));
+            new RemoteClient(port, remote, protocol));
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);

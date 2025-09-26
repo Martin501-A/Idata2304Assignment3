@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.server.threads;
+package ntnu.iir.bidata.martinbf.logic.server.thread;
 
 import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.Command;

@@ -1,39 +1,39 @@
-package ntnu.iir.bidata.martinbf.logic.client;
+package ntnu.iir.bidata.martinbf.logic.client.thread;
 
-import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.logic.Command;
+import ntnu.iir.bidata.martinbf.logic.client.handler.ResponseHandler;
 import ntnu.iir.bidata.martinbf.logic.server.IPAddress;
-import ntnu.iir.bidata.martinbf.entity.Remote;
-
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
 
 /**
  * Client for sending UDP commands to a remote UDP server.
  */
-public class UDPRemoteClient implements TVRemoteClient {
-  private Remote remote;
-  private int port;
+public class UDPRemoteClientThread extends Thread {
+  private ResponseHandler handler;
+  private Command command;
   private SocketAddress tvAddress;
 
 
   /**
    * Instantiates the UDP client with the given remote and port.
-   *
-   * @param remote the remote to use.
+   *.
    * @param port   the port to send on.
    */
-  public UDPRemoteClient(Remote remote, int port) {
-    if (remote == null) {
-      throw new IllegalArgumentException("Remote cannot be null");
+  public UDPRemoteClientThread(ResponseHandler handler, int port, IPAddress address, Command command) {
+    if (handler == null) {
+      throw new IllegalArgumentException("handler cannot be null");
     }
     if (port < 1024 || port > 50000) {
       throw new IllegalArgumentException("Port must be between 0 and 65535");
     }
-    this.remote = remote;
-    this.port = port;
-    this.tvAddress = new InetSocketAddress(IPAddress.ServerAddress.getAddress(), port);
+    if (address == null) {
+      throw new IllegalArgumentException("Address cannot be null");
+    }
+    this.handler = handler;
+    this.command = command;
+    this.tvAddress = new InetSocketAddress(address.toString(), port);
+
   }
 
 
@@ -41,7 +41,7 @@ public class UDPRemoteClient implements TVRemoteClient {
    * Sends a command to the UDP server using this clients protocol.
    */
   @Override
-  public void protocol(Command command) {
+  public void run() {
     if (command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
@@ -57,12 +57,14 @@ public class UDPRemoteClient implements TVRemoteClient {
         socket.receive(responsePacket);
         String response = new String(responsePacket.getData(), 0, responsePacket.getLength());
         if (!response.isEmpty()) {
-          remote.setCurrentChannel(Channel.valueOf(response));
+          handler.handle(response);
         }
       } catch (SocketTimeoutException e) {
         System.err.println("No response from server, request timed out.");
       } catch (IOException e) {
         e.printStackTrace();
+      } catch (Exception e) {
+        throw new RuntimeException(e); //TODO Better implementation
       }
   }
 }

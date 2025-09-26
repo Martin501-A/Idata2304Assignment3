@@ -1,16 +1,16 @@
 package ntnu.iir.bidata.martinbf.presentation;
 
 import ntnu.iir.bidata.martinbf.logic.Command;
-import ntnu.iir.bidata.martinbf.logic.client.TVRemoteClient;
+import ntnu.iir.bidata.martinbf.logic.client.RemoteClient;
 
 /**
  * Handles User Input and sends commands to the TV.
  */
 public class RemoteController {
   private RemoteApp app;
-  private TVRemoteClient remote;
+  private RemoteClient remote;
 
-  public RemoteController(RemoteApp app, TVRemoteClient remote) {
+  public RemoteController(RemoteApp app, RemoteClient remote) {
     if (app == null) {
       throw new IllegalArgumentException("App cannot be null");
     }

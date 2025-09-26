@@ -6,7 +6,8 @@ package ntnu.iir.bidata.martinbf.logic;
 public enum Command {
   POWER("POWER"),
   CHANNEL_UP("CHANNEL_UP"),
-  CHANNEL_DOWN("CHANNEL_DOWN");
+  CHANNEL_DOWN("CHANNEL_DOWN"),
+  CONNECT("CONNECT");
 
 
 
