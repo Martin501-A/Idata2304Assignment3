@@ -46,8 +46,10 @@ public class TVTCPThread extends Thread {
       String outputLine;
       TVProtocol protocol = new TVProtocol(tv);
       inputLine = in.readLine();
-      outputLine = protocol.process(Command.valueOf(inputLine));
-      out.println(outputLine);
+      if (inputLine != null) {
+        outputLine = protocol.process(Command.valueOf(inputLine));
+        out.println(outputLine);
+      }
       socket.close();
     } catch (IOException e) {
       e.printStackTrace();

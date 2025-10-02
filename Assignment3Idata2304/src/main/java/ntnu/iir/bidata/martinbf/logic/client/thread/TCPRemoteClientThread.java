@@ -18,27 +18,13 @@ import java.net.SocketAddress;
 /**
  * Represents the client that connects to the TV server.
  */
-public class TCPRemoteClientThread extends Thread {
-  private ResponseHandler handler;
-  private InetSocketAddress address;
-  private Command command;
+public class TCPRemoteClientThread extends ClientRuntimeThread {
 
   /**
    * Instantiates a new TV remote client with a remote.
    */
   public TCPRemoteClientThread(ResponseHandler handler, int port, IPAddress address, Command command) {
-    if (handler == null) {
-      throw new IllegalArgumentException("handler cannot be null");
-    }
-    if (port < 1024 || port > 65535) {
-      throw new IllegalArgumentException("Port must be between 1024 and 65535");
-    }
-    if (address == null) {
-      throw new IllegalArgumentException("Address cannot be null");
-    }
-    this.handler = handler;
-    this.command = command;
-    this.address = new InetSocketAddress(address.toString(), port);
+    super(handler, port, address, command);
   }
 
   /**
@@ -46,20 +32,20 @@ public class TCPRemoteClientThread extends Thread {
    */
   @Override
   public void run() {
-    if (command == null) {
+    if (super.command == null) {
       throw new IllegalArgumentException("Command cannot be null");
     }
     try (Socket socket = new Socket(
-            this.address.getHostName(),
-            this.address.getPort()
+            super.address.getHostName(),
+            super.address.getPort()
     );
          PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
          BufferedReader in = new BufferedReader(
                  new InputStreamReader(socket.getInputStream()))) {
-      out.println(command);
+      out.println(super.command);
       String response = in.readLine();
       if (response != null) {
-        handler.handle(response);
+        super.handler.handle(response);
       }
     } catch (Exception e) {
       //TODO For now we just ignore exceptions

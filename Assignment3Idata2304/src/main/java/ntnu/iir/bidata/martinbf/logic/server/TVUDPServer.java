@@ -29,16 +29,19 @@ public class TVUDPServer implements TVServer {
   /**
    * Creates a new TVUDPServer.
    */
-  public TVUDPServer(int port, TV tv) throws IOException {
+  public TVUDPServer(int port, TV tv, IPAddress address) throws IOException {
     if (port < 1024 || port > 65535) {
       throw new IllegalArgumentException("Port must be between 1024 and 65535");
     }
     if (tv == null) {
       throw new IllegalArgumentException("TV cannot be null");
     }
+    if (address == null) {
+      throw new IllegalArgumentException("Address cannot be null");
+    }
     this.tv = tv;
     this.socket = new DatagramSocket(port,
-            InetAddress.getByName(IPAddress.ServerAddress.getAddress()));
+            InetAddress.getByName(address.getAddress()));
   }
 
 

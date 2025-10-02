@@ -9,11 +9,7 @@ import java.net.*;
 /**
  * Client for sending UDPServerFinderProtocol commands to a remote UDPServerFinderProtocol server.
  */
-public class UDPRemoteClientThread extends Thread {
-  private ResponseHandler handler;
-  private Command command;
-  private SocketAddress tvAddress;
-
+public class UDPRemoteClientThread extends ClientRuntimeThread {
 
   /**
    * Instantiates the UDPServerFinderProtocol client with the given remote and port.
@@ -21,22 +17,8 @@ public class UDPRemoteClientThread extends Thread {
    * @param port   the port to send on.
    */
   public UDPRemoteClientThread(ResponseHandler handler, int port, IPAddress address, Command command) {
-    if (handler == null) {
-      throw new IllegalArgumentException("handler cannot be null");
-    }
-    if (port < 1024 || port > 50000) {
-      throw new IllegalArgumentException("Port must be between 0 and 65535");
-    }
-    if (address == null) {
-      throw new IllegalArgumentException("Address cannot be null");
-    }
-    this.handler = handler;
-    this.command = command;
-    this.tvAddress = new InetSocketAddress(address.toString(), port);
-
+    super(handler, port, address, command);
   }
-
-
   /**
    * Sends a command to the UDPServerFinderProtocol server using this clients protocol.
    */

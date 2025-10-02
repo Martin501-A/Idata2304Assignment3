@@ -25,7 +25,7 @@ public class UDPServerFinderProtocol implements ConnectionProtocol {
    * @return the socket address of the server.
    */
   @Override
-  public SocketAddress findServer(IPAddress address, int port) throws ServerNotFoundException {
+  public InetSocketAddress findServer(IPAddress address, int port) throws ServerNotFoundException {
     try {
       ResponseHandler handler = new Connectionhandler();
       UDPRemoteClientThread client = new UDPRemoteClientThread(handler, port, address, Command.CONNECT);

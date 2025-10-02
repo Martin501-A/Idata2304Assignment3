@@ -9,7 +9,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.List;
 
-public class TVTCPServer implements TVServer {
+public class TVTCPServer extends Thread implements TVServer {
   private TV tv;
   private ServerSocket socket;
   private volatile boolean running = true;
@@ -19,14 +19,20 @@ public class TVTCPServer implements TVServer {
    *
    * @param port the port number to listen on (must be between 1024 and 65535)
    */
-  public TVTCPServer(int port, TV tv) throws IOException {
+  public TVTCPServer(int port, TV tv, IPAddress address) throws IOException {
     if (port < 1024 || port > 65535) {
       throw new IllegalArgumentException("Port must be between 1024 and 65535");
+    }
+    if (tv == null) {
+      throw new IllegalArgumentException("TV cannot be null");
+    }
+    if (address == null) {
+      throw new IllegalArgumentException("Address cannot be null");
     }
     List<Channel> channels = List.of(Channel.values());
     this.tv = tv;
     this.socket = new ServerSocket(port, 50,
-            InetAddress.getByName(IPAddress.ServerAddress.getAddress()));
+            InetAddress.getByName(address.getAddress()));
   }
 
   /**
@@ -46,9 +52,14 @@ public class TVTCPServer implements TVServer {
   /**
    * Starts the TV server to accept incoming connections.
    */
-  public void start() throws IOException {
+  @Override
+  public void run() {
     while (this.running) {
+      try {
         new TVTCPThread(this.socket.accept(), this.tv).start();
+      } catch (IOException e) {
+        continue;
+      }
     }
   }
 

@@ -69,6 +69,9 @@ public class TVProtocol {
           tv.previousChannel();
           yield tv.getCurrentChannel().toString();
         }
+        case CONNECT -> {
+          yield "CONNECTED";
+        }
       };
   }
 }

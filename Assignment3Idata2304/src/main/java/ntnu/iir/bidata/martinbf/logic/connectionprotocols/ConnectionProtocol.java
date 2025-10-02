@@ -2,6 +2,7 @@ package ntnu.iir.bidata.martinbf.logic.connectionprotocols;
 
 import ntnu.iir.bidata.martinbf.logic.server.IPAddress;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
@@ -12,6 +13,6 @@ public interface ConnectionProtocol {
     /**
      * Finds a server using the protocol
      */
-    public SocketAddress findServer(IPAddress address, int port) throws Exception;
+    public InetSocketAddress findServer(IPAddress address, int port) throws Exception;
 
 }

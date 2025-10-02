@@ -10,6 +10,8 @@ import ntnu.iir.bidata.martinbf.entity.Remote;
 import ntnu.iir.bidata.martinbf.logic.client.RemoteClient;
 import ntnu.iir.bidata.martinbf.logic.client.handler.RemoteHandler;
 import ntnu.iir.bidata.martinbf.logic.client.handler.ResponseHandler;
+import ntnu.iir.bidata.martinbf.logic.client.thread.TCPRemoteClientThread;
+import ntnu.iir.bidata.martinbf.logic.client.thread.UDPRemoteClientThread;
 import ntnu.iir.bidata.martinbf.logic.connectionprotocols.ConnectionProtocol;
 import ntnu.iir.bidata.martinbf.logic.connectionprotocols.TCPServerFinderProtocol;
 import ntnu.iir.bidata.martinbf.logic.connectionprotocols.UDPServerFinderProtocol;
@@ -23,6 +25,8 @@ public class RemoteApp extends Application {
 
   private Label channel;
   private Remote remote;
+  private int port;
+  private RemoteController controller;
 
   /**
    * Starts the JavaFX application.
@@ -30,12 +34,11 @@ public class RemoteApp extends Application {
   @Override
   public void start(Stage primaryStage) {
     System.out.println("Starting RemoteApp");
-    int port = getPortFromConsole();
+    this.port = getPortFromConsole();
     this.remote = new Remote();
-    ResponseHandler handler = new RemoteHandler(this.remote);
     ConnectionProtocol protocol = getProtocolFromUser();
-    RemoteController controller = new RemoteController(this,
-            new RemoteClient(port, handler, protocol));
+    System.out.println(protocol.toString());
+    createControllerAndClient(protocol);
     BorderPane rootNode = new BorderPane();
     VBox middle = new VBox();
     rootNode.setTop(middle);
@@ -54,17 +57,38 @@ public class RemoteApp extends Application {
   }
 
   /**
+   * Creates the controller and client based on the chosen protocol.
+   */
+  private void createControllerAndClient(ConnectionProtocol protocol) {
+    if (protocol instanceof TCPServerFinderProtocol) {
+      this.controller = new RemoteController(this,
+              new RemoteClient(port,
+                      this.remote,
+                      protocol,
+                      TCPRemoteClientThread.class));
+    } else if (protocol instanceof UDPServerFinderProtocol) {
+      this.controller = new RemoteController(this,
+              new RemoteClient(port,
+                      this.remote,
+                      protocol,
+                      UDPRemoteClientThread.class));
+    } else {
+      throw new IllegalArgumentException("Invalid protocol");
+    }
+  }
+
+  /**
    * Returns the protocol chosen by the user.
    */
   private ConnectionProtocol getProtocolFromUser() {
     Scanner scanner = new Scanner(System.in);
-      System.out.print("Choose protocol (UDPServerFinderProtocol, TCPServerFinderProtocol): ");
+      System.out.print("Choose protocol (UDP, TCP): ");
       String input = scanner.nextLine();
       ConnectionProtocol protocol;
-      if (input.equals("UDPServerFinderProtocol")) {
-        protocol = new TCPServerFinderProtocol();
-      } else if (input.equals("TCPServerFinderProtocol")) {
+      if (input.equals("UDP")) {
         protocol = new UDPServerFinderProtocol();
+      } else if (input.equals("TCP")) {
+        protocol = new TCPServerFinderProtocol();
       } else {
         System.out.println("Invalid input. Please enter 1 or 2.");
         scanner.close();
