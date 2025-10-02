@@ -1,7 +1,6 @@
 package ntnu.iir.bidata.martinbf.entity;
 
 import ntnu.iir.bidata.martinbf.datatypes.CircularIterator;
-import ntnu.iir.bidata.martinbf.logic.TVSubscriber;
 
 import java.util.LinkedList;
 import java.util.List;

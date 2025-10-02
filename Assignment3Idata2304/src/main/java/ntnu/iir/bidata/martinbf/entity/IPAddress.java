@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.server;
+package ntnu.iir.bidata.martinbf.entity;
 
 /**
  * Represents the known ip addresses for the TV servers.

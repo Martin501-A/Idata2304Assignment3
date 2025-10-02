@@ -1,9 +1,9 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.logic.parser;
 
 /**
  * Represents the available commands for the TV protocol.
  */
-public enum Command {
+public enum TVCommand {
   POWER("POWER"),
   CHANNEL_UP("CHANNEL_UP"),
   CHANNEL_DOWN("CHANNEL_DOWN"),
@@ -13,7 +13,7 @@ public enum Command {
 
   private final String command;
 
-  Command(String command) {
+  TVCommand(String command) {
     this.command = command;
   }
 
