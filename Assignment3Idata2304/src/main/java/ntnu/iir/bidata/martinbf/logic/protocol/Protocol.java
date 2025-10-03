@@ -1,5 +1,7 @@
 package ntnu.iir.bidata.martinbf.logic.protocol;
 
+import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
+
 /**
  * represents a protocol for communication on the application.
  */
@@ -32,5 +34,5 @@ public interface Protocol {
   /**
    * Finishes the protocol and returns the result.
    */
-  byte[] finish();
+  byte[] finish() throws IllegalFinishException;
 }

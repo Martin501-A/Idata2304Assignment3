@@ -3,11 +3,12 @@ package ntnu.iir.bidata.martinbf.logic.protocol;
 import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.parser.TVCommand;
 import ntnu.iir.bidata.martinbf.logic.parser.TVCommandParser;
+import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
 
 /**
  * Represents the TV protocol used for communication.
  */
-public class TVServerProtocol implements Protocol {
+public class TVProtocol implements Protocol {
   private final TVCommandParser parser;
   private boolean fail;
   private boolean complete;
@@ -15,9 +16,9 @@ public class TVServerProtocol implements Protocol {
   private TVCommand[] commands;
 
   /**
-   * Constructs a new TVServerProtocol instance.
+   * Constructs a new TVProtocol instance.
    */
-  public TVServerProtocol(TV tv) {
+  public TVProtocol(TV tv) {
     if (tv == null) {
       throw new IllegalArgumentException("TV cannot be null");
     }
@@ -32,6 +33,7 @@ public class TVServerProtocol implements Protocol {
    *
    * @param data The data to process.
    */
+  //Maybe have a service that handles the commands instead of the protocol directly?
   @Override
   public void processData(byte[] data) {
     this.commands = this.parser.parse(data);
@@ -43,17 +45,26 @@ public class TVServerProtocol implements Protocol {
     }
   }
 
-
+  /**
+   * Finishes the protocol processing and returns the result.
+   *
+   * @return The result of the protocol processing.
+   * @Throws IllegalFinishException if the protocol has failed or is not complete.
+   */
   @Override
-  public byte[] finish() {
-    if (this.complete && !this.fail) {
-      return tv.getCurrentChannel().toString().getBytes();
+  public byte[] finish() throws IllegalFinishException {
+    if (this.fail) {
+      throw new IllegalFinishException("Protocol failed during processing");
+    } if (!this.complete) {
+      throw new IllegalFinishException("Protocol is not complete");
+    } else {
+      return this.tv.getCurrentChannel().toString().getBytes();
     }
-    return null;
   }
 
   /**
    * Processes a single TV command.
+   * Fails the protocol if the command is unrecognized.
    */
   private void process(TVCommand command) {
     switch (command) {
@@ -67,6 +78,12 @@ public class TVServerProtocol implements Protocol {
     }
   }
 
+  /**
+   * Checks whether the protocol processing is complete.
+   * The protocol is considered complete if all commands have been processed.
+   *
+   * @return true if the protocol is complete, false otherwise.
+   */
   @Override
   public boolean isComplete() {
     if (this.commands == null) {
@@ -81,16 +98,29 @@ public class TVServerProtocol implements Protocol {
     return complete;
   }
 
+  /**
+   * Checks whether the protocol has failed.
+   *
+   * @return true if the protocol has failed, false otherwise.
+   */
   @Override
   public boolean hasFailed() {
     return this.fail;
   }
 
+  /**
+   * Fails the protocol.
+   */
   @Override
   public void fail() {
     this.fail = true;
   }
 
+  /**
+   * Resets the protocol to its initial state.
+   * If the protocol is complete, it resets all states.
+   * If the protocol has failed, it only resets the fail state and commands.
+   */
   @Override
   public void reset() {
     if (this.complete){

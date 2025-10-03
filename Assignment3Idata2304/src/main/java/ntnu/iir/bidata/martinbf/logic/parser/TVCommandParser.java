@@ -36,6 +36,6 @@ public class TVCommandParser {
         i++;
       }
     }
-    return commands; // Placeholder return
+    return commands;
   }
 }
