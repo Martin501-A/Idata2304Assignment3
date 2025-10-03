@@ -7,7 +7,6 @@ package ntnu.iir.bidata.martinbf.logic.parser;
 public class TVCommandParser {
   private final int maxCommands; // Maximum number of commands to parse
 
-
   /**
    * Creates a new TVCommandParser with a maximum amount of commands to parse.
    *
@@ -27,7 +26,7 @@ public class TVCommandParser {
    * @return An array of TVCommand enums.
    */
   public TVCommand[] parse(byte[] data) {
-    String dataStr = new String(data).trim();
+    String dataStr = new String(data);
     String[] commandStrings = dataStr.split(" ");
     TVCommand[] commands = new TVCommand[this.maxCommands];
     int i = 0;

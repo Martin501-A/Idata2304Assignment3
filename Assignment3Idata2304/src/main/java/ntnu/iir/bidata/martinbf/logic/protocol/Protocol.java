@@ -28,4 +28,9 @@ public interface Protocol {
    * Resets the protocol to its initial state.
    */
   void reset();
+
+  /**
+   * Finishes the protocol and returns the result.
+   */
+  byte[] finish();
 }
