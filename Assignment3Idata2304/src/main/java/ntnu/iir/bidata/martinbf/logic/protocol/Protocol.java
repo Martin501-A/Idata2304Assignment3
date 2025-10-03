@@ -14,6 +14,10 @@ public interface Protocol {
    * Checks whether the protocol is complete.
    */
   boolean isComplete();
+  /**
+   * Checks whether the protocol has failed.
+   */
+  boolean hasFailed();
 
   /**
    * Fails the protocol.
