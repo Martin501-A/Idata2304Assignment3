@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * </ul>
  * <p>Negative Tests: </p>
  * <ul>
+ *   <li>Creating an instance with null class</li>
  *   <li>Decoding a null value</li>
  *   <li>Decoding an empty byte array</li>
  *   <li>Decoding a byte array with invalid UTF-8 sequences</li>
@@ -72,6 +73,20 @@ public class StringDecoderTest {
   }
 
   // Negative Tests
+
+  /**
+   * Tests creating an instance with a null class.
+   * This should throw an IllegalArgumentException.
+   */
+  @Test
+  public void createInstanceWithNullClass() {
+    try {
+      StringDecoder<TestEnum> decoder = new StringDecoder<>(null);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertTrue(true);
+    }
+  }
 
   /**
    * Tests decoding a null value.

@@ -17,6 +17,9 @@ public class StringDecoder<D extends Enum<D>> implements Decoder<D> {
    * Creates a new StringEncoder.
    */
   public StringDecoder(Class<D> decodeClass) {
+    if (decodeClass == null) {
+      throw new IllegalArgumentException("Decode class cannot be null");
+    }
     this.charSet = StandardCharsets.UTF_8;
     this.decodeClass = decodeClass;
   }
