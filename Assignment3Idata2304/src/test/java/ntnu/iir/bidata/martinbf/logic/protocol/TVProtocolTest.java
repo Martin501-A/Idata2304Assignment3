@@ -3,9 +3,14 @@ package ntnu.iir.bidata.martinbf.logic.protocol;
 import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.TVCommand;
+import ntnu.iir.bidata.martinbf.logic.encoding.StringDecoder;
 import ntnu.iir.bidata.martinbf.logic.encoding.StringEncoder;
+import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -41,10 +46,37 @@ public class TVProtocolTest {
     return new TV(channels);
   }
 
+  /**
+   * Creates a Test Instance for the protocol.
+   */
+  private TVProtocol createProtocol() {
+    return new TVProtocol(createTV(), new StringEncoder<>(), new StringDecoder<>(TVCommand.class));
+  }
   // Positive tests
+
+  /**
+   * Tests that a protocol can be completed.
+   */
   @Test
   public void protocolCanSucceed() {
+    try {
+      TVProtocol protocol = createProtocol();
+      protocol.processData(new StringEncoder<TVCommand>().encode(new TVCommand[]{TVCommand.POWER}));
+      protocol.finish();
+      assertTrue(protocol.isComplete());
+    } catch (IllegalFinishException e) {
+      fail();
+    }
+  }
 
+  /**
+   * Tests that a protocol can fail.
+   */
+  @Test
+  public void protocolCanFail() {
+    TVProtocol protocol = createProtocol();
+    protocol.fail();
+    assertTrue(protocol.hasFailed());
   }
 
 }

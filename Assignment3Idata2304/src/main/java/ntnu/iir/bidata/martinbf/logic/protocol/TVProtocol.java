@@ -45,10 +45,8 @@ public class TVProtocol implements Protocol {
     try {
       this.commands = this.decoder.decode(data);
       for (TVCommand command : commands) {
-        if (command != null) {
           process(command);
           command = null;
-        }
       }
     } catch (CorruptDataException e) {
       fail();
