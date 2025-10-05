@@ -1,8 +1,7 @@
 package ntnu.iir.bidata.martinbf.logic.protocol;
 
 import ntnu.iir.bidata.martinbf.entity.TV;
-import ntnu.iir.bidata.martinbf.logic.parser.TVCommand;
-import ntnu.iir.bidata.martinbf.logic.parser.TVCommandParser;
+import ntnu.iir.bidata.martinbf.logic.TVCommand;
 import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
 
 /**
@@ -36,7 +35,7 @@ public class TVProtocol implements Protocol {
   //Maybe have a service that handles the commands instead of the protocol directly?
   @Override
   public void processData(byte[] data) {
-    this.commands = this.parser.parse(data);
+    this.commands = this.parser.decode(data);
     for (TVCommand command : commands) {
       if (command != null) {
         process(command);

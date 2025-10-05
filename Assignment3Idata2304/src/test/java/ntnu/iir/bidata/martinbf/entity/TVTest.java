@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *   <li>That a TV cannot be constructed with null or empty channels</li>
  * </ul>
  */
-class TVTest {
+public class TVTest {
   // Positive tests
 
   /**

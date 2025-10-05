@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *   <li>That it does not run forever in a for loop except given permission</li>
  * </ul>
  */
-class CircularIteratorTest {
+public class CircularIteratorTest {
 
   // Positive tests
 
