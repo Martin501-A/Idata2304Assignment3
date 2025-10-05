@@ -1,9 +1,9 @@
 package ntnu.iir.bidata.martinbf.logic.protocol;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.entity.TV;
+import ntnu.iir.bidata.martinbf.logic.TVCommand;
+import ntnu.iir.bidata.martinbf.logic.encoding.StringEncoder;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
@@ -44,8 +44,7 @@ public class TVProtocolTest {
   // Positive tests
   @Test
   public void protocolCanSucceed() {
-    TVProtocol protocol = new TVProtocol(createTV());
-    //TODO Testing TVProtocol
+
   }
 
 }

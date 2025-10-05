@@ -1,44 +1,24 @@
-package ntnu.iir.bidata.martinbf.logic.decoderencoder;
+package ntnu.iir.bidata.martinbf.logic.encoding;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Encodes and decodes data enums through strings with UTF-8.
+ * Decodes data enums through strings with UTF-8.
+ * A data enum is represented as an enum that holds a String.
  *
- * @param <D> The type of data to decode to.
- * @param <E> The type of data to encode from.
+ * @param <D> The type of data to Decode.
  */
-public class StringEncoder<D extends Enum<D>, E extends Enum<E>> implements Encoder<E>, Decoder<D> {
+public class StringDecoder<D extends Enum<D>> implements Decoder<D> {
   private final Charset charSet;
   private final Class<D> decodeClass;
 
   /**
    * Creates a new StringEncoder.
    */
-  public StringEncoder(Class<D> decodeClass) {
+  public StringDecoder(Class<D> decodeClass) {
     this.charSet = StandardCharsets.UTF_8;
     this.decodeClass = decodeClass;
-  }
-
-  /**
-   * Encodes the given data into a byte array.
-   *
-   * @param data The data to encode.
-   * @return A byte array representing the encoded data.
-   */
-  @Override
-  public byte[] encode(E[] data) {
-    List<String> stringList = new ArrayList<>();
-    for (E item : data) {
-      if (item != null) {
-        stringList.add(item.name());
-      }
-    }
-    String resultString = String.join(" ", stringList);
-    return resultString.getBytes(charSet);
   }
 
   /**
@@ -56,13 +36,13 @@ public class StringEncoder<D extends Enum<D>, E extends Enum<E>> implements Enco
       String[] stringArray = stringData.split(" ");
       D[] resultArray = (D[]) java.lang.reflect.Array.newInstance(decodeClass, stringArray.length);
       for (int i = 0; i < stringArray.length; i++) {
-        if (stringArray[i] != null) {
           resultArray[i] = Enum.valueOf(decodeClass, stringArray[i]);
-        }
       }
       return resultArray;
     } catch (IllegalArgumentException e) {
       throw new CorruptDataException("Decoding failed: Invalid enum value");
+    } catch (NullPointerException e) {
+      throw new CorruptDataException("Decoding failed: Data is null" );
     }
   }
 }

@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.decoderencoder;
+package ntnu.iir.bidata.martinbf.logic.encoding;
 
 /**
  * A generic parser interface for parsing byte data into objects of type T.
