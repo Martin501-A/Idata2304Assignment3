@@ -2,13 +2,17 @@ package ntnu.iir.bidata.martinbf.logic.protocol;
 
 import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.TVCommand;
+import ntnu.iir.bidata.martinbf.logic.decoderencoder.CorruptDataException;
+import ntnu.iir.bidata.martinbf.logic.decoderencoder.Decoder;
+import ntnu.iir.bidata.martinbf.logic.decoderencoder.Encoder;
 import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
 
 /**
  * Represents the TV protocol used for communication.
  */
 public class TVProtocol implements Protocol {
-  private final TVCommandParser parser;
+  private final Encoder encoder;
+  private final Decoder<TVCommand> decoder;
   private boolean fail;
   private boolean complete;
   private final TV tv;
@@ -21,7 +25,8 @@ public class TVProtocol implements Protocol {
     if (tv == null) {
       throw new IllegalArgumentException("TV cannot be null");
     }
-    this.parser = new TVCommandParser(3);
+    this.encoder = null; //TODO Change when encoder/decoder is implemented
+    this.decoder = null;
     this.fail = false;
     this.complete = false;
     this.tv  = tv;
@@ -35,12 +40,16 @@ public class TVProtocol implements Protocol {
   //Maybe have a service that handles the commands instead of the protocol directly?
   @Override
   public void processData(byte[] data) {
-    this.commands = this.parser.decode(data);
-    for (TVCommand command : commands) {
-      if (command != null) {
-        process(command);
-        command = null;
+    try {
+      this.commands = this.decoder.decode(data);
+      for (TVCommand command : commands) {
+        if (command != null) {
+          process(command);
+          command = null;
+        }
       }
+    } catch (CorruptDataException e) {
+      fail();
     }
   }
 

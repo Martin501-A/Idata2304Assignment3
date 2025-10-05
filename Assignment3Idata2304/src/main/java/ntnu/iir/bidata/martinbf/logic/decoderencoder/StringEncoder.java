@@ -14,15 +14,13 @@ import java.util.List;
 public class StringEncoder<D extends Enum<D>, E extends Enum<E>> implements Encoder<E>, Decoder<D> {
   private final Charset charSet;
   private final Class<D> decodeClass;
-  private final Class<E> encodeClass;
 
   /**
    * Creates a new StringEncoder.
    */
-  public StringEncoder(Class<D> decodeClass, Class<E> encodeClass) {
+  public StringEncoder(Class<D> decodeClass) {
     this.charSet = StandardCharsets.UTF_8;
     this.decodeClass = decodeClass;
-    this.encodeClass = encodeClass;
   }
 
   /**
@@ -44,20 +42,27 @@ public class StringEncoder<D extends Enum<D>, E extends Enum<E>> implements Enco
   }
 
   /**
-   * Decodes the given byte data into an array of objects of type D.
+   * Decodes the given byte data into an array of objects of type.
    *
    * @param data The byte data to decode.
    * @return An array of objects of type D.
    */
+  //TODO if problem arises look here when it comes to Decoding
   @SuppressWarnings("unchecked")
   @Override
-  public D[] decode(byte[] data) {
-    String stringData = new String(data, charSet);
-    String[] stringArray = stringData.split(" ");
-    D[] resultArray = (D[]) java.lang.reflect.Array.newInstance(decodeClass, stringArray.length);
-    for (int i = 0; i < stringArray.length; i++) {
-      resultArray[i] = Enum.valueOf(decodeClass, stringArray[i]);
+  public D[] decode(byte[] data) throws CorruptDataException {
+    try {
+      String stringData = new String(data, charSet);
+      String[] stringArray = stringData.split(" ");
+      D[] resultArray = (D[]) java.lang.reflect.Array.newInstance(decodeClass, stringArray.length);
+      for (int i = 0; i < stringArray.length; i++) {
+        if (stringArray[i] != null) {
+          resultArray[i] = Enum.valueOf(decodeClass, stringArray[i]);
+        }
+      }
+      return resultArray;
+    } catch (IllegalArgumentException e) {
+      throw new CorruptDataException("Decoding failed: Invalid enum value");
     }
-    return resultArray;
   }
 }

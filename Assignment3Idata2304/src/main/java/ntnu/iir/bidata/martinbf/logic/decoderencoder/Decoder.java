@@ -13,5 +13,5 @@ public interface Decoder<T> {
    * @param data The byte data to parse.
    * @return An array of objects of type T.
    */
-  T[] decode(byte[] data);
+  T[] decode(byte[] data) throws CorruptDataException;
 }
