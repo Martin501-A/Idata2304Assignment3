@@ -3,7 +3,7 @@ package ntnu.iir.bidata.martinbf.logic.protocol.exception;
 /**
  * Exception thrown when an illegal finish operation is attempted in a protocol.
  */
-public class IllegalFinishException extends Exception {
+public class IllegalFinishException extends RuntimeException {
 
   /**
    * Constructs a new IllegalFinishException with the specified detail message.

@@ -3,36 +3,38 @@ package ntnu.iir.bidata.martinbf.logic.protocol;
 import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
 
 /**
- * represents a protocol for communication on the application.
+ * Represents a protocol for communication on the application.
+ * @param <I> the type of input messages.
+ * @param <O> the type of output messages.
  */
-public interface Protocol {
+public interface Protocol<I, O> {
 
   /**
    * Processes the given data according to the protocol's rules.
    */
-  void processData(byte[] data);
+  public void processData(I[] data);
 
   /**
    * Checks whether the protocol is complete.
    */
-  boolean isComplete();
+  public boolean isComplete();
   /**
    * Checks whether the protocol has failed.
    */
-  boolean hasFailed();
+  public boolean hasFailed();
 
   /**
-   * Fails the protocol.
+   * Returns the current response of the protocol.
    */
-  void fail();
+  public O[] getResponse();
 
   /**
    * Resets the protocol to its initial state.
    */
-  void reset();
+  public void reset();
 
   /**
    * Finishes the protocol and returns the result.
    */
-  byte[] finish() throws IllegalFinishException;
+  public O[] finish() throws IllegalFinishException;
 }

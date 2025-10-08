@@ -2,7 +2,7 @@ package ntnu.iir.bidata.martinbf.logic.protocol;
 
 import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.entity.TV;
-import ntnu.iir.bidata.martinbf.logic.TVCommand;
+import ntnu.iir.bidata.martinbf.logic.TVPMessage;
 import ntnu.iir.bidata.martinbf.logic.encoding.StringDecoder;
 import ntnu.iir.bidata.martinbf.logic.encoding.StringEncoder;
 import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
@@ -50,7 +50,7 @@ public class TVProtocolTest {
    * Creates a Test Instance for the protocol.
    */
   private TVProtocol createProtocol() {
-    return new TVProtocol(createTV(), new StringEncoder<>(), new StringDecoder<>(TVCommand.class));
+    return new TVProtocol(createTV());
   }
   // Positive tests
 
@@ -61,7 +61,7 @@ public class TVProtocolTest {
   public void protocolCanSucceed() {
     try {
       TVProtocol protocol = createProtocol();
-      protocol.processData(new StringEncoder<TVCommand>().encode(new TVCommand[]{TVCommand.POWER}));
+      protocol.processData(new TVPMessage[]{TVPMessage.FINISH});
       protocol.finish();
       assertTrue(protocol.isComplete());
     } catch (IllegalFinishException e) {
@@ -74,9 +74,7 @@ public class TVProtocolTest {
    */
   @Test
   public void protocolCanFail() {
-    TVProtocol protocol = createProtocol();
-    protocol.fail();
-    assertTrue(protocol.hasFailed());
+    fail();
   }
 
 }
