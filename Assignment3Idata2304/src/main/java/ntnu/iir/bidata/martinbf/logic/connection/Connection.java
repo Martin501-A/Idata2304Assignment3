@@ -35,16 +35,6 @@ public abstract class Connection implements Runnable, AutoCloseable {
   protected abstract void connect();
 
   /**
-   * Sends data over the connection.
-   */
-  void send(byte[] data);
-
-  /**
-   * Receives data from the connection.
-   */
-  byte[] receive();
-
-  /**
    * Disconnects from the network.
    */
   protected abstract void disconnect();
