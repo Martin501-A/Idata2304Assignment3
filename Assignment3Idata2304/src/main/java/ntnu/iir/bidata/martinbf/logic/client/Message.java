@@ -43,4 +43,12 @@ public class Message {
   public String getData() {
     return data;
   }
+
+  /**
+   * Returns a string representation of the message.
+   */
+  @Override
+  public String toString() {
+    return key + ":" + data;
+  }
 }

@@ -1,5 +1,7 @@
 package ntnu.iir.bidata.martinbf.logic.connection;
 
+import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,7 +19,7 @@ public abstract class Connection implements Runnable, AutoCloseable {
   /**
    * Constructs a Connection with specified input and output queues.
    *
-   * @param address the socket address to connect to
+   * @param address the socket address to connect to.
    */
   public Connection(SocketAddress address) {
     if (address == null) {
@@ -32,12 +34,33 @@ public abstract class Connection implements Runnable, AutoCloseable {
   /**
    * Connects to the network.
    */
-  protected abstract void connect();
+  protected abstract void connect() throws ConnectException;
 
   /**
    * Disconnects from the network.
    */
-  protected abstract void disconnect();
+  protected abstract void disconnect() throws IOException;
+
+  /**
+   * Runs the connection.
+   */
+  @Override
+  public abstract void run();
+
+  /**
+   * The step handles a runloop of input and output from the connection.
+   */
+  protected abstract void step();
+
+  /**
+   * Handles incoming data from the connection.
+   */
+  protected abstract void handleInput();
+
+  /**
+   * Handles outgoing data to the connection.
+   */
+  protected abstract void handleOutput();
 
   /**
    * Sends data through the connection.
@@ -77,15 +100,6 @@ public abstract class Connection implements Runnable, AutoCloseable {
   }
 
   /**
-   * Returns the socket address of the connection.
-   *
-   * @return the socket address
-   */
-  public SocketAddress getAddress() {
-    return address;
-  }
-
-  /**
    * Sets a new socket address for the connection.
    *
    * @param address the new socket address.
@@ -98,5 +112,21 @@ public abstract class Connection implements Runnable, AutoCloseable {
       throw new IllegalCallerException("Cannot change address while connection is running");
     }
     this.address = address;
+  }
+
+  /**
+   * Returns the socket address of the connection.
+   *
+   * @return the socket address
+   */
+  public SocketAddress getAddress() {
+    return address;
+  }
+
+  /**
+   * Returns whether the connection is currently running.
+   */
+  public boolean isRunning() {
+    return running;
   }
 }

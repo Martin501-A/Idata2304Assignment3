@@ -36,12 +36,12 @@ public class Client {
   }
 
   /**
-   * Starts the client by establishing the connection.
+   * Starts the client and begins processing Connections.
    */
   public void start() {
     while (isRunning) {
       for (Connection connection : connections.values()) {
-        runClientLoop(connection);
+        runConnectionLoop(connection);
       }
     }
   }
@@ -51,7 +51,7 @@ public class Client {
    *
    * @param connection the connection to use.
    */
-  private void runClientLoop(Connection connection) {
+  private void runConnectionLoop(Connection connection) {
     byte[] receivedData = connection.receive();
     List<Message> messages = decoderService.decode(receivedData);
     messageResolverService.resolve(messages);
@@ -66,7 +66,11 @@ public class Client {
   public void stop() {
     this.isRunning = false;
     for (Connection connection : connections.values()) {
-      connection.disconnect();
+      try {
+        connection.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   }
 }
