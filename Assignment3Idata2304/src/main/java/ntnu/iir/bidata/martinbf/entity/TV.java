@@ -2,7 +2,7 @@ package ntnu.iir.bidata.martinbf.entity;
 
 import ntnu.iir.bidata.martinbf.datatypes.CircularIterator;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,30 +12,33 @@ public class TV {
   private List<Channel> channels;
   private boolean powerStatus;
   private CircularIterator<Channel> channelIterator;
-  private List<TVSubscriber> subscribers;
+  private final List<TVSubscriber> subscribers;
 
 
 
   /**
    * Create a TV with given channels.
+   *
+   * @param channels the list of channels available on the TV
+   *
    */
   public TV(List<Channel> channels) {
-    this.powerStatus = false; // TV is initially off
-    setChannels(channels);
-    this.subscribers = new LinkedList<>();
+    this.powerStatus = false;
+    this.channels = new ArrayList<>();
+    this.subscribers = new ArrayList<>();
+    addChannels(channels);
   }
 
   /**
-   * Set the channels for the TV. also sets the current channel to the first channel.
+   * Adds the channels for the TV. also sets the current channel to the first channel.
    */
-  public void setChannels(List<Channel> channels) {
+  public void addChannels(List<Channel> channels) {
     if (channels == null) {
       throw new IllegalArgumentException("Channels cannot be null or empty");
     }
     if (channels.isEmpty()) {
       throw new IllegalArgumentException("Channels cannot be null or empty");
     }
-    this.channels = new LinkedList<>();
     this.channels.addAll(channels);
     this.channelIterator = new CircularIterator<>(this.channels);
   }
