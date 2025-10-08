@@ -10,6 +10,7 @@ public class UDPConnection implements Connection {
   private String host;
   private int port;
   private final Protocol protocol;
+  private
 
 
   public UDPConnection(String host, int port, Protocol protocol) {

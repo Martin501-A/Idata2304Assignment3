@@ -16,6 +16,16 @@ public interface Connection {
   void connect(String address, int port);
 
   /**
+   * Sends data over the connection.
+   */
+  void send(byte[] data);
+
+  /**
+   * Receives data from the connection.
+   */
+  byte[] receive();
+
+  /**
    * Disconnects from the network.
    */
   void disconnect();

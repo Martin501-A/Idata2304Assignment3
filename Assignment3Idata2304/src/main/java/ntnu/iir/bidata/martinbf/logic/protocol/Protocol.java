@@ -36,5 +36,5 @@ public interface Protocol<I, O> {
   /**
    * Finishes the protocol and returns the result.
    */
-  public O[] finish() throws IllegalFinishException;
+  public O[] finish();
 }

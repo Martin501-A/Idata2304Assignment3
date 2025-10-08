@@ -9,7 +9,7 @@ public enum TVPMessage {
   POWER("POWER"),
   CHANNEL_UP("CHANNEL_UP"),
   CHANNEL_DOWN("CHANNEL_DOWN"),
-  CONNECT("CONNECT"),
+  CONNECT("CONNECT");
 
   private final String command;
 

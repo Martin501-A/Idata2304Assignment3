@@ -3,10 +3,10 @@ package ntnu.iir.bidata.martinbf.logic.protocol;
 import ntnu.iir.bidata.martinbf.entity.Channel;
 import ntnu.iir.bidata.martinbf.entity.TV;
 import ntnu.iir.bidata.martinbf.logic.TVPMessage;
-import ntnu.iir.bidata.martinbf.logic.encoding.CorruptDataException;
-import ntnu.iir.bidata.martinbf.logic.encoding.Decoder;
-import ntnu.iir.bidata.martinbf.logic.encoding.Encoder;
 import ntnu.iir.bidata.martinbf.logic.protocol.exception.IllegalFinishException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the TV protocol used for communication.
@@ -15,10 +15,13 @@ public class TVProtocol implements Protocol<TVPMessage, Channel> {
   private boolean fail;
   private boolean complete;
   private final TV tv;
-  private TVPMessage[] commands;
+  private List<TVPMessage> messages;
 
   /**
    * Constructs a new TVProtocol instance.
+   *
+   * @param tv The TV associated with this protocol.
+   * @throws IllegalArgumentException if the TV is null.
    */
   public TVProtocol(TV tv) {
     if (tv == null) {
@@ -27,12 +30,15 @@ public class TVProtocol implements Protocol<TVPMessage, Channel> {
     this.fail = false;
     this.complete = false;
     this.tv = tv;
+    this.messages = new ArrayList<>();
   }
 
   /**
    * Processes the given data according to the TV protocol.
    *
    * @param data The data to process.
+   * @throws IllegalArgumentException if the data is null.
+   * @throws IllegalArgumentException if any message in the data is null.
    */
   //Maybe have a service that handles the commands instead of the protocol directly?
   @Override
@@ -40,10 +46,21 @@ public class TVProtocol implements Protocol<TVPMessage, Channel> {
   }
 
   /**
+   * Processes a single TVPMessage according to the TV protocol.
+   */
+  private void processMessage(TVPMessage message) {
+    if (message == null) {
+      throw new IllegalArgumentException("Message cannot be null");
+    }
+    switch (message) {
+    }
+  }
+
+  /**
    * Finishes the protocol processing and returns the result.
    *
    * @return The result of the protocol processing.
-   * @Throws IllegalFinishException if the protocol has failed or is not complete.
+   * @throws IllegalFinishException if the protocol is not complete or has failed.
    */
   @Override
   public Channel[] finish() {
@@ -100,10 +117,28 @@ public class TVProtocol implements Protocol<TVPMessage, Channel> {
     if (this.complete) {
       this.complete = false;
       this.fail = false;
-      this.commands = null;
+      this.messages = null;
     } else if (this.fail) {
       this.fail = false;
-      this.commands = null;
+      this.messages = null;
     }
+  }
+
+  /**
+   * Returns the TV associated with this protocol.
+   *
+   * @return The TV associated with this protocol.
+   */
+  public TV getTV() {
+    return this.tv;
+  }
+
+  /**
+   * Returns the messages yet to be processed by the protocol.
+   *
+   * @return The messages yet to be processed by the protocol.
+   */
+  public TVPMessage[] getMessages() {
+    return this.messages;
   }
 }
