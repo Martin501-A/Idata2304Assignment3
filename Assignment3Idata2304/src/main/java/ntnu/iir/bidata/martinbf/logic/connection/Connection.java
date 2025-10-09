@@ -10,10 +10,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Represents a network connection. It automatically handles data transmission.
  */
 public abstract class Connection implements Runnable, AutoCloseable {
-  private final Queue<byte[]> inputQueue;
-  private final Queue<byte[]> outputQueue;
-  private SocketAddress address;
-  private volatile boolean running;
+  protected final Queue<byte[]> inputQueue;
+  protected final Queue<byte[]> outputQueue;
+  protected SocketAddress address;
+  protected volatile boolean connected;
 
 
   /**
@@ -28,7 +28,7 @@ public abstract class Connection implements Runnable, AutoCloseable {
     this.inputQueue = new ConcurrentLinkedQueue<>();
     this.outputQueue = new ConcurrentLinkedQueue<>();
     this.address = address;
-    this.running = false;
+    this.connected = false;
   }
 
   /**
@@ -42,15 +42,13 @@ public abstract class Connection implements Runnable, AutoCloseable {
   protected abstract void disconnect() throws IOException;
 
   /**
-   * Runs the connection.
+   * Returns the socket address of the connection.
+   *
+   * @return the socket address
    */
-  @Override
-  public abstract void run();
-
-  /**
-   * The step handles a runloop of input and output from the connection.
-   */
-  protected abstract void step();
+  public SocketAddress getAddress() {
+    return address;
+  }
 
   /**
    * Handles incoming data from the connection.
@@ -63,13 +61,10 @@ public abstract class Connection implements Runnable, AutoCloseable {
   protected abstract void handleOutput();
 
   /**
-   * Sends data through the connection.
+   * Returns whether the connection is connected.
    */
-  public void send(byte[] data) {
-    if (data == null) {
-      throw new IllegalArgumentException("Data to send cannot be null");
-    }
-    outputQueue.add(data);
+  public boolean isConnected() {
+    return this.connected;
   }
 
   /**
@@ -80,6 +75,12 @@ public abstract class Connection implements Runnable, AutoCloseable {
   protected void placeInInputQueue(byte[] data) {
     inputQueue.add(data);
   }
+
+  /**
+   * Runs the connection.
+   */
+  @Override
+  public abstract void run();
 
   /**
    * Retrieves and removes data from the output queue.
@@ -100,6 +101,16 @@ public abstract class Connection implements Runnable, AutoCloseable {
   }
 
   /**
+   * Sends data to the senders queue.
+   */
+  public void send(byte[] data) {
+    if (data == null) {
+      throw new IllegalArgumentException("Data to send cannot be null");
+    }
+    outputQueue.add(data);
+  }
+
+  /**
    * Sets a new socket address for the connection.
    *
    * @param address the new socket address.
@@ -108,25 +119,15 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (address == null) {
       throw new IllegalArgumentException("Address cannot be null");
     }
-    if (this.running) {
+    if (this.connected) {
       throw new IllegalCallerException("Cannot change address while connection is running");
     }
     this.address = address;
   }
 
   /**
-   * Returns the socket address of the connection.
-   *
-   * @return the socket address
+   * The step handles a runloop of input and output from the connection.
    */
-  public SocketAddress getAddress() {
-    return address;
-  }
+  protected abstract void step();
 
-  /**
-   * Returns whether the connection is currently running.
-   */
-  public boolean isRunning() {
-    return running;
-  }
 }
