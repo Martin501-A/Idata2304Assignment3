@@ -3,7 +3,6 @@ package ntnu.iir.bidata.martinbf.logic.connection;
 import java.io.IOException;
 import java.net.*;
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Represents a UDP connection which sends and receives bytes.
@@ -32,10 +31,17 @@ public class UDPConnection extends Connection {
    */
   @Override
   protected void connect() throws ConnectException {
-    if (this.connected) {
-      throw new IllegalArgumentException("Already connected");
+    if (isConnected()) {
+      throw new IllegalCallerException();
     }
-    this.connected = true;
+  }
+
+  /**
+   * Closes the connection.
+   */
+  @Override
+  public void close() {
+    disconnect();
   }
 
   /**
@@ -47,26 +53,52 @@ public class UDPConnection extends Connection {
     if (!isConnected()) {
       throw new IllegalArgumentException("Not connected");
     }
-    this.connected = false;
     if (!this.socket.isClosed()) {
       this.socket.close();
     }
   }
 
   /**
-   * Handles input for sending data which takes a peek at input and
-   * sends the data if it exists..
+   * Receives data from the connection and adds it to incoming data.
    */
   @Override
-  protected void handleInput() {
-    byte[] data = inputQueue.poll();
-    if (data != null) {
-      try {
-        sendData(data);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+  protected void handleIncomingData() {
+    try {
+      byte[] buffer = new byte[1024];
+      DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+      this.socket.receive(packet);
+      byte[] received = Arrays.copyOf(packet.getData(), packet.getLength());
+      incomingQueue.offer(received);
+    } catch (SocketTimeoutException e) {
+      // This exception is more expected than others and should maybe have a special handling.
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
+
+
+  /**
+   * Sends the next data in the outgoing queue to the receiver socket.
+   */
+  @Override
+  protected void handleOutgoingData() {
+    try {
+      byte[] data = outgoingQueue.poll();
+      if (data != null) {
+        sendData(data);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Checks whether the socket is connected or not.
+   * Always returns true on UDP since socket is connectionless.
+   */
+  @Override
+  public boolean isConnected() {
+    return true;
   }
 
   /**
@@ -82,56 +114,5 @@ public class UDPConnection extends Connection {
     socket.send(packet);
   }
 
-  /**
-   * Receives data from the connection and puts it into outputQueue.
-   */
-  @Override
-  protected void handleOutput() {
-    try {
-      byte[] buffer = new byte[1024];
-      DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-      this.socket.receive(packet);
-      byte[] received = Arrays.copyOf(packet.getData(), packet.getLength());
-      outputQueue.offer(received);
-    } catch (SocketTimeoutException e) {
-      // This exception is more expected than others and should maybe have a special handling.
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 
-  /**
-   * Runs a runTimeLoop for the connection if it is connected.
-   * Does 1 step each time it is called.
-   */
-  @Override
-  public void run() {
-    try {
-      if (isConnected()) {
-        step();
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Handles input and output.
-   */
-  @Override
-  protected void step() {
-    //Maybe handle exceptions here.
-    handleInput();
-    handleOutput();
-  }
-
-  /**
-   * Closes the connection.
-   *
-   * @throws Exception Exceptions happen when closing connection.
-   */
-  @Override
-  public void close() throws Exception {
-    disconnect();
-  }
 }

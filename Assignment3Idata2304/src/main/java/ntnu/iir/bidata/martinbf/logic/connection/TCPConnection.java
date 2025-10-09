@@ -1,9 +1,11 @@
 package ntnu.iir.bidata.martinbf.logic.connection;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
+import java.util.Arrays;
 
 /**
  * Represents a TCPConnection that connects to a remote server.
@@ -11,19 +13,20 @@ import java.net.SocketAddress;
  * If used by a server connection is already connected given that ServerSocket.accept is used.
  */
 public class TCPConnection extends Connection {
-  private Socket socket;
+  private final Socket socket;
+  private OutputStream out;
+  private InputStream in;
 
   /**
    * Creates a new TCPConnection from a socket.
    * If socket is already connected the connection is set as connected.
    */
-  public TCPConnection(SocketAddress address, Socket socket) {
+  public TCPConnection(SocketAddress address, Socket socket) throws IOException {
     super(address);
     if (socket == null) {
       throw new IllegalArgumentException("Socket cannot be null");
     }
     this.socket = socket;
-    super.connected = socket.isConnected();
   }
 
   /**
@@ -33,14 +36,34 @@ public class TCPConnection extends Connection {
    */
   @Override
   protected void connect() throws ConnectException {
-    if (super.connected) {
-      throw new ConnectException("Already connected");
-    }
     try {
-      this.socket.connect(super.address);
+      if (!isConnected()) {
+        this.socket.connect(super.address);
+        this.socket.setSoTimeout(10);
+      }
+      if (isConnected()) {
+        this.out = new DataOutputStream(this.socket.getOutputStream());
+        this.in = new DataInputStream(this.socket.getInputStream());
+      }
     } catch (IOException e) {
-     throw new ConnectException("Could not connect");
+      try {
+        this.socket.close();
+      } catch (IOException ie) {
+        //Add handling in case closing also fails.
+        throw new ConnectException("Failed to Close connection.");
+      }
+      throw new ConnectException("Could not connect");
     }
+  }
+
+  /**
+   * Closes the connection safely.
+   *
+   * @throws IOException if an error happens when closing socket.
+   */
+  @Override
+  public void close() throws IOException {
+    disconnect();
   }
 
   /**
@@ -58,28 +81,56 @@ public class TCPConnection extends Connection {
     }
   }
 
+  /**
+   * Handles incoming data from the connection and adds it to our incomingQueue.
+   */
   @Override
-  protected void handleInput() {
-
+  protected void handleIncomingData() {
+    try {
+      byte[] buffer = new byte[1024];
+      int readBytes = in.read(buffer);
+      if (readBytes > 0) {
+        byte[] received = Arrays.copyOf(buffer, readBytes);
+        super.incomingQueue.offer(received);
+      }
+    } catch (SocketTimeoutException e) {
+      //Handle this when applicable
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
+  /**
+   * Handles outgoing data by taking the next member of the outgoing queue,
+   */
   @Override
-  protected void handleOutput() {
-
+  protected void handleOutgoingData() {
+    try {
+      byte[] data = super.outgoingQueue.poll();
+      if (data != null) {
+        sendData(data);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
-  @Override
-  public void run() {
+  /**
+   * Checks whether the socket is connected or not.
+   */
+   @Override
+   public boolean isConnected() {
+     return this.socket.isConnected();
+   }
 
-  }
-
-  @Override
-  protected void step() {
-
-  }
-
-  @Override
-  public void close() throws Exception {
-
+  /**
+   * Sends data over the connection.
+   */
+  private void sendData(byte[] data) throws IOException {
+    if (data == null) {
+      throw new IllegalArgumentException("Data is null");
+    }
+    out.write(data);
+    out.flush();
   }
 }

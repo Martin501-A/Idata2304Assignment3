@@ -10,11 +10,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Represents a network connection. It automatically handles data transmission.
  */
 public abstract class Connection implements Runnable, AutoCloseable {
-  protected final Queue<byte[]> inputQueue;
-  protected final Queue<byte[]> outputQueue;
+  protected final Queue<byte[]> outgoingQueue;
+  protected final Queue<byte[]> incomingQueue;
   protected SocketAddress address;
-  protected volatile boolean connected;
-
 
   /**
    * Constructs a Connection with specified input and output queues.
@@ -25,10 +23,9 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (address == null) {
       throw new IllegalArgumentException("Address cannot be null");
     }
-    this.inputQueue = new ConcurrentLinkedQueue<>();
-    this.outputQueue = new ConcurrentLinkedQueue<>();
+    this.outgoingQueue = new ConcurrentLinkedQueue<>();
+    this.incomingQueue = new ConcurrentLinkedQueue<>();
     this.address = address;
-    this.connected = false;
   }
 
   /**
@@ -53,42 +50,30 @@ public abstract class Connection implements Runnable, AutoCloseable {
   /**
    * Handles incoming data from the connection.
    */
-  protected abstract void handleInput();
+  protected abstract void handleIncomingData();
 
   /**
    * Handles outgoing data to the connection.
    */
-  protected abstract void handleOutput();
+  protected abstract void handleOutgoingData();
 
   /**
-   * Returns whether the connection is connected.
+   * Returns whether the connection is connected or not.
    */
-  public boolean isConnected() {
-    return this.connected;
-  }
+  public abstract boolean isConnected();
 
   /**
-   * Places received data into the input queue.
-   *
-   * @param data the data to place in the input queue
-   */
-  protected void placeInInputQueue(byte[] data) {
-    inputQueue.add(data);
-  }
-
-  /**
-   * Runs the connection.
+   * Runs the connection loop while connected.
    */
   @Override
-  public abstract void run();
-
-  /**
-   * Retrieves and removes data from the output queue.
-   *
-   * @return the data to be sent, or null if no data is available
-   */
-  protected byte[] retrieveFromOutputQueue() {
-    return outputQueue.poll();
+  public void run() {
+    try {
+      while (isConnected()) {
+        step();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -97,7 +82,7 @@ public abstract class Connection implements Runnable, AutoCloseable {
    * @return the received data, or null if no data is available
    */
   public byte[] receive() {
-    return inputQueue.poll();
+    return incomingQueue.poll();
   }
 
   /**
@@ -107,7 +92,7 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (data == null) {
       throw new IllegalArgumentException("Data to send cannot be null");
     }
-    outputQueue.add(data);
+    outgoingQueue.add(data);
   }
 
   /**
@@ -119,15 +104,21 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (address == null) {
       throw new IllegalArgumentException("Address cannot be null");
     }
-    if (this.connected) {
+    if (isConnected()) {
       throw new IllegalCallerException("Cannot change address while connection is running");
     }
     this.address = address;
   }
 
   /**
-   * The step handles a runloop of input and output from the connection.
+   * Runs one step of the connection loop.
+   * Handles input and output.
    */
-  protected abstract void step();
-
+  protected void step() {
+    //Maybe handle exceptions here.
+    if (isConnected()) {
+      handleIncomingData();
+      handleOutgoingData();
+    }
+  }
 }
