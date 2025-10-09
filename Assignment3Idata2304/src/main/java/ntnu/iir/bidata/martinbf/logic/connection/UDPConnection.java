@@ -33,15 +33,19 @@ public class UDPConnection extends Connection {
   @Override
   protected void connect() throws ConnectException {
     if (this.connected) {
-      throw new  ConnectException("Already connected");
+      throw new IllegalArgumentException("Already connected");
     }
     this.connected = true;
   }
 
+  /**
+   * Disconnects the connection.
+   *
+   */
   @Override
   protected void disconnect() throws IOException {
     if (!isConnected()) {
-      throw new  ConnectException("Not connected");
+      throw new IllegalArgumentException("Not connected");
     }
     this.connected = false;
     if (!this.socket.isClosed()) {
