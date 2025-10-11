@@ -11,6 +11,8 @@ import java.util.Arrays;
  * Represents a TCPConnection that connects to a remote server.
  * If used by a client the connection needs to connect first before running.
  * If used by a server connection is already connected given that ServerSocket.accept is used.
+ *
+ * @author martin barth frøseth
  */
 public class TCPConnection extends Connection {
   private final Socket socket;
@@ -18,14 +20,19 @@ public class TCPConnection extends Connection {
   private InputStream in;
 
   /**
+   * Creates a new TCPConnection from an address.
+   */
+  public TCPConnection(SocketAddress address) throws IOException {
+    super(address);
+    this.socket = new Socket();
+  }
+
+  /**
    * Creates a new TCPConnection from a socket.
    * If socket is already connected the connection is set as connected.
    */
-  public TCPConnection(SocketAddress address, Socket socket) throws IOException {
-    super(address);
-    if (socket == null) {
-      throw new IllegalArgumentException("Socket cannot be null");
-    }
+  public TCPConnection(Socket socket) throws IOException {
+    super(socket.getRemoteSocketAddress());
     this.socket = socket;
   }
 

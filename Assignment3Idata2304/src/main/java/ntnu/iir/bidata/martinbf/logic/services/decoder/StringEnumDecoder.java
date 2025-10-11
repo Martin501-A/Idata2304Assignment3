@@ -1,7 +1,9 @@
-package ntnu.iir.bidata.martinbf.logic.encoding;
+package ntnu.iir.bidata.martinbf.logic.services.decoder;
+
+import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Decodes data enums through strings with UTF-8.
@@ -9,23 +11,26 @@ import java.nio.charset.StandardCharsets;
  *
  * @param <D> The type of data to Decode.
  */
-public class StringDecoder<D extends Enum<D>> implements Decoder<D> {
+public class StringEnumDecoder<D extends Enum<D>> implements Decoder<D[]> {
   private final Charset charSet;
   private final Class<D> decodeClass;
 
   /**
    * Creates a new StringEncoder.
    */
-  public StringDecoder(Class<D> decodeClass) {
+  public StringEnumDecoder(Class<D> decodeClass, Charset charSet) {
     if (decodeClass == null) {
       throw new IllegalArgumentException("Decode class cannot be null");
     }
-    this.charSet = StandardCharsets.UTF_8;
+    if (charSet == null) {
+      throw new IllegalArgumentException("Charset cannot be null");
+    }
+    this.charSet = charSet;
     this.decodeClass = decodeClass;
   }
 
   /**
-   * Decodes the given byte data into an array of objects of type.
+   * Decodes the given byte data into an array of objects of the enum type.
    *
    * @param data The byte data to decode.
    * @return An array of objects of type D.
@@ -33,7 +38,7 @@ public class StringDecoder<D extends Enum<D>> implements Decoder<D> {
   //TODO if problem arises look here when it comes to Decoding
   @SuppressWarnings("unchecked")
   @Override
-  public D[] decode(byte[] data) throws CorruptDataException {
+  public List<D> decode(D[] data) throws CorruptDataException {
     try {
       String stringData = new String(data, charSet);
       String[] stringArray = stringData.split(" ");

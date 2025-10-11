@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.encoding;
+package ntnu.iir.bidata.martinbf.logic.services;
 
 /**
  * Exception thrown when corrupt data is encountered during decoding.

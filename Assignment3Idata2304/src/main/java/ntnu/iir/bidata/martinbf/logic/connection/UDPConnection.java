@@ -6,12 +6,14 @@ import java.util.Arrays;
 
 /**
  * Represents a UDP connection which sends and receives bytes.
+ *
+ * @author martin barth frøseth
  */
 public class UDPConnection extends Connection {
   private final DatagramSocket socket;
 
   /**
-   * Creates the UDPConnection for a Client
+   * Creates the UDPConnection for a Client.
    *
    * @param address the address for the remote socket.
    * @throws SocketException if a general socket cannot connect to any address and port.
@@ -40,7 +42,7 @@ public class UDPConnection extends Connection {
    * Closes the connection.
    */
   @Override
-  public void close() {
+  public void close() throws IOException {
     disconnect();
   }
 

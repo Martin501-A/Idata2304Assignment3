@@ -1,6 +1,10 @@
 package ntnu.iir.bidata.martinbf.logic.client;
 
+import ntnu.iir.bidata.martinbf.entity.Message;
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
+import ntnu.iir.bidata.martinbf.logic.services.MessageResolver.MessageResolverService;
+import ntnu.iir.bidata.martinbf.logic.services.decoder.DecoderService;
+import ntnu.iir.bidata.martinbf.logic.services.encoder.EncoderService;
 
 import java.util.List;
 import java.util.Map;

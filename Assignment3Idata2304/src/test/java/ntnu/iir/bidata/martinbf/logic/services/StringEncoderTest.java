@@ -1,5 +1,6 @@
-package ntnu.iir.bidata.martinbf.logic.encoding;
+package ntnu.iir.bidata.martinbf.logic.services;
 
+import ntnu.iir.bidata.martinbf.logic.services.encoder.StringEnumEncoder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,9 +39,9 @@ public class StringEncoderTest {
    */
   @Test
   public void decodeAndEncodeSimpleEnum() {
-      StringEncoder<TestEnum> stringEncoder = new StringEncoder<>();
+      StringEnumEncoder<TestEnum> stringEnumEncoder = new StringEnumEncoder<>();
       TestEnum[] originalEnums = {TestEnum.VALUE_ONE};
-      byte[] encodedData = stringEncoder.encode(originalEnums);
+      byte[] encodedData = stringEnumEncoder.encode(originalEnums);
       assertNotNull(encodedData);
   }
 
@@ -49,9 +50,9 @@ public class StringEncoderTest {
    */
   @Test
   public void decodeAndEncodeMultipleEnums() {
-    StringEncoder<TestEnum> stringEncoder = new StringEncoder<>();
+    StringEnumEncoder<TestEnum> stringEnumEncoder = new StringEnumEncoder<>();
     TestEnum[] originalEnums = {TestEnum.VALUE_ONE, TestEnum.VALUE_TWO, TestEnum.VALUE_THREE};
-    byte[] encodedData = stringEncoder.encode(originalEnums);
+    byte[] encodedData = stringEnumEncoder.encode(originalEnums);
     assertNotNull(encodedData);
   }
 
@@ -64,9 +65,9 @@ public class StringEncoderTest {
   @Test
   public void encodeNullValue() {
     try {
-      StringEncoder<TestEnum> stringEncoder = new StringEncoder<>();
+      StringEnumEncoder<TestEnum> stringEnumEncoder = new StringEnumEncoder<>();
       TestEnum[] originalEnums = null;
-      byte[] encodedData = stringEncoder.encode(originalEnums);
+      byte[] encodedData = stringEnumEncoder.encode(originalEnums);
       fail();
     } catch (IllegalArgumentException e) {
       assertTrue(true);
@@ -80,9 +81,9 @@ public class StringEncoderTest {
   @Test
   public void encodeEmptyArray() {
     try {
-    StringEncoder<TestEnum> stringEncoder = new StringEncoder<>();
+    StringEnumEncoder<TestEnum> stringEnumEncoder = new StringEnumEncoder<>();
     TestEnum[] originalEnums = {};
-    byte[] encodedData = stringEncoder.encode(originalEnums);
+    byte[] encodedData = stringEnumEncoder.encode(originalEnums);
     fail();
     } catch (IllegalArgumentException e) {
       assertTrue(true);

@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Represents a network connection. It automatically handles data transmission.
+ *
+ * @author martin barth frøseth
  */
 public abstract class Connection implements Runnable, AutoCloseable {
   protected final Queue<byte[]> outgoingQueue;
@@ -114,11 +116,13 @@ public abstract class Connection implements Runnable, AutoCloseable {
    * Runs one step of the connection loop.
    * Handles input and output.
    */
-  protected void step() {
+  protected void step() throws IOException {
     //Maybe handle exceptions here.
-    if (isConnected()) {
+    if (!isConnected()) {
+      throw new IllegalCallerException("Cannot step whilst not connected");
+    }
       handleIncomingData();
       handleOutgoingData();
-    }
+
   }
 }

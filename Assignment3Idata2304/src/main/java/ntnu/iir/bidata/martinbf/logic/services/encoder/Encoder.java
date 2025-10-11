@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.encoding;
+package ntnu.iir.bidata.martinbf.logic.services.encoder;
 
 /**
  * A generic encoder interface.

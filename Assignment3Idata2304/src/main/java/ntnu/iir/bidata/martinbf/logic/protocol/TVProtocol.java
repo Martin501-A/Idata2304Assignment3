@@ -139,6 +139,6 @@ public class TVProtocol implements Protocol<TVPMessage, Channel> {
    * @return The messages yet to be processed by the protocol.
    */
   public TVPMessage[] getMessages() {
-    return this.messages;
+    throw new IllegalArgumentException("TVProtocol.getMessages() not implemented yet");
   }
 }

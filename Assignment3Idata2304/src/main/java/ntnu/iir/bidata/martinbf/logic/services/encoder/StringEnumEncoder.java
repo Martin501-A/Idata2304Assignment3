@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.encoding;
+package ntnu.iir.bidata.martinbf.logic.services.encoder;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -11,13 +11,13 @@ import java.util.List;
  *
  * @param <E> The type of data to encode.
  */
-public class StringEncoder<E extends Enum<E>> implements Encoder<E>{
+public class StringEnumEncoder<E extends Enum<E>> implements Encoder<E> {
   private final Charset charSet;
 
   /**
    * Creates a new StringEncoder.
    */
-  public StringEncoder() {
+  public StringEnumEncoder() {
     this.charSet = StandardCharsets.UTF_8;
   }
 

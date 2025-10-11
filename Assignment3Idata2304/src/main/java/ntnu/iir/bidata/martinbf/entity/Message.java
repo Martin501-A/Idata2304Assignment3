@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.client;
+package ntnu.iir.bidata.martinbf.entity;
 
 /**
  * Represents a message sent or received by the client or Server.
@@ -7,23 +7,23 @@ package ntnu.iir.bidata.martinbf.logic.client;
  */
 public class Message {
   private String key;
-  private String data;
+  private String value;
 
   /**
    * Constructs a Message with the given key and value.
    *
    * @param key   identifies the type of message.
-   * @param data  the data in the message.
+   * @param value  the value in the message.
    */
-  public Message(String key, String data) {
+  public Message(String key, String value) {
     if (key == null || key.isEmpty()) {
       throw new IllegalArgumentException("Key cannot be null or empty");
     }
-    if (data == null) {
-      throw new IllegalArgumentException("Data cannot be null or empty");
+    if (value == null) {
+      throw new IllegalArgumentException("Value cannot be null or empty");
     }
     this.key = key;
-    this.data = data;
+    this.value = value;
   }
 
   /**
@@ -36,19 +36,21 @@ public class Message {
   }
 
   /**
-   * Returns the data of the message.
+   * Returns the value of the message.
    *
-   * @return the data
+   * @return the value held by the message
    */
-  public String getData() {
-    return data;
+  public String getValue() {
+    return value;
   }
 
   /**
    * Returns a string representation of the message.
+   *
+   * @return the key value pair separated by a colon.
    */
   @Override
   public String toString() {
-    return key + ":" + data;
+    return key + ":" + value;
   }
 }
