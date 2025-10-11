@@ -14,12 +14,10 @@ import java.util.List;
  * of messages and turns it into messages by using strings and a charset.
  * Separators for each message \n, key and value are separated by colon(key:value).
  */
-public class ByteDecoder implements Decoder<byte[] ,Message> {
+public class ByteDecoder implements Decoder<byte[] ,List<Message>> {
   private final Charset charset;
   private static final String separator = "\n";
   private static final String kvSeparator = ":"; //Key-value separator.
-
-
 
   /**
    * Creates an instance of the decoder

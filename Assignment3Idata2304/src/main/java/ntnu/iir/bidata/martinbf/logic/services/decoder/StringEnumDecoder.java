@@ -1,17 +1,17 @@
 package ntnu.iir.bidata.martinbf.logic.services.decoder;
 
+import ntnu.iir.bidata.martinbf.entity.Message;
 import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
 
 import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * Decodes data enums through strings with UTF-8.
- * A data enum is represented as an enum that holds a String.
+ * Decodes Strings into StringEnums.
  *
  * @param <D> The type of data to Decode.
  */
-public class StringEnumDecoder<D extends Enum<D>> implements Decoder<D[]> {
+public class StringEnumDecoder<D extends Enum<D>> implements Decoder<String,D> {
   private final Charset charSet;
   private final Class<D> decodeClass;
 
@@ -36,21 +36,8 @@ public class StringEnumDecoder<D extends Enum<D>> implements Decoder<D[]> {
    * @return An array of objects of type D.
    */
   //TODO if problem arises look here when it comes to Decoding
-  @SuppressWarnings("unchecked")
   @Override
-  public List<D> decode(D[] data) throws CorruptDataException {
-    try {
-      String stringData = new String(data, charSet);
-      String[] stringArray = stringData.split(" ");
-      D[] resultArray = (D[]) java.lang.reflect.Array.newInstance(decodeClass, stringArray.length);
-      for (int i = 0; i < stringArray.length; i++) {
-          resultArray[i] = Enum.valueOf(decodeClass, stringArray[i]);
-      }
-      return resultArray;
-    } catch (IllegalArgumentException e) {
-      throw new CorruptDataException("Decoding failed: Invalid enum value");
-    } catch (NullPointerException e) {
-      throw new CorruptDataException("Decoding failed: Data is null" );
-    }
+  public D decode(String data) throws CorruptDataException {
+    throw new IllegalCallerException("Function not implemented");
   }
 }

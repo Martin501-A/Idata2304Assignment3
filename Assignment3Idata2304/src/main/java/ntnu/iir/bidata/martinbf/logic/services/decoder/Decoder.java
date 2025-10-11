@@ -18,6 +18,6 @@ public interface Decoder<I, O> {
    * @param data The byte data to parse.
    * @return An array of objects of type T.
    */
-   List<O> decode(I data) throws CorruptDataException;
+   O decode(I data) throws CorruptDataException;
 
 }

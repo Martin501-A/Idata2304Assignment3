@@ -29,6 +29,7 @@ public class Client {
    * @param encoderService         the encoder service for encoding messages.
    * @param messageResolverService the message resolver service for handling messages.
    */
+
   public Client(Map<String, Connection> connections,
                 DecoderService decoderService,
                 EncoderService encoderService,
