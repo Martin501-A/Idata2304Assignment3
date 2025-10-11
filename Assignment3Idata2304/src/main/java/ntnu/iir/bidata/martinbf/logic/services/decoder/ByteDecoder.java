@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ByteDecoder implements Decoder<byte[] ,List<Message>> {
   private final Charset charset;
-  private static final String separator = "\n";
+  private static final String separator = "\n"; // Message separator.
   private static final String kvSeparator = ":"; //Key-value separator.
 
   /**
@@ -39,6 +39,16 @@ public class ByteDecoder implements Decoder<byte[] ,List<Message>> {
   public static ByteDecoder getStandardInstance() {
     return new ByteDecoder(StandardCharsets.UTF_8);
   }
+
+  /**
+   * Returns the charset used by the decoder.
+   *
+   * @return the charset used in decoding.
+   */
+  public Charset getCharset() {
+    return this.charset;
+  }
+
   /**
    * Decodes byte into an array of messages.
    *
@@ -48,14 +58,19 @@ public class ByteDecoder implements Decoder<byte[] ,List<Message>> {
    */
   @Override
   public List<Message> decode(byte[] data) throws CorruptDataException {
+    if (data == null) {
+      throw new IllegalArgumentException("Null data was put as argument");
+    }
     final List<Message> messages = new ArrayList<>();
     String stringData = new String(data, this.charset);
     String[] stringArray = stringData.split(separator);
     for (int i = 0; i < stringArray.length; i++) {
-      String[] kv = stringArray[i].split(kvSeparator);
-      messages.add(new  Message(kv[0], kv[1]));
+      String[] kv = stringArray[i].trim().split(kvSeparator, 2);
+      if (kv.length != 2 || kv[0].isEmpty()) {
+        throw new CorruptDataException("Transferred Message was not split into key value pair.");
+      }
+      messages.add(new Message(kv[0].trim(), kv[1].trim()));
     }
     return messages;
   }
-
 }

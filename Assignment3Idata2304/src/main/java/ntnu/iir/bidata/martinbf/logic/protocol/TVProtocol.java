@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Represents the TV protocol used for communication.
  */
-public class TVProtocol implements Protocol<TVPMessage, Channel> {
+public class TVProtocol implements Protocol<TVPMessage[], Channel[]> {
   private boolean fail;
   private boolean complete;
   private final TV tv;

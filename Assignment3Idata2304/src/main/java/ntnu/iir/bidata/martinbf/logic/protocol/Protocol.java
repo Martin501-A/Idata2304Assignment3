@@ -12,7 +12,7 @@ public interface Protocol<I, O> {
   /**
    * Processes the given data according to the protocol's rules.
    */
-  public void processData(I[] data);
+  public void processData(I data);
 
   /**
    * Checks whether the protocol is complete.
@@ -26,7 +26,7 @@ public interface Protocol<I, O> {
   /**
    * Returns the current response of the protocol.
    */
-  public O[] getResponse();
+  public O getResponse();
 
   /**
    * Resets the protocol to its initial state.
@@ -36,5 +36,5 @@ public interface Protocol<I, O> {
   /**
    * Finishes the protocol and returns the result.
    */
-  public O[] finish();
+  public O finish();
 }

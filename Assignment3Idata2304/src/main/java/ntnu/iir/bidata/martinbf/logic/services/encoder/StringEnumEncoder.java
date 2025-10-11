@@ -19,6 +19,7 @@ public class StringEnumEncoder<E extends Enum<E>> implements Encoder<E> {
    */
   public StringEnumEncoder() {
     this.charSet = StandardCharsets.UTF_8;
+    //TODO make this a bit more flexible on charset.
   }
 
   /**

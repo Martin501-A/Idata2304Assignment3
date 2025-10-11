@@ -1,6 +1,5 @@
-package ntnu.iir.bidata.martinbf.logic.services;
+package ntnu.iir.bidata.martinbf.logic.services.encoder;
 
-import ntnu.iir.bidata.martinbf.logic.services.encoder.StringEnumEncoder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

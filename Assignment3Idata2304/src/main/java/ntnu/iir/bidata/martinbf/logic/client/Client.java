@@ -2,7 +2,7 @@ package ntnu.iir.bidata.martinbf.logic.client;
 
 import ntnu.iir.bidata.martinbf.entity.Message;
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
-import ntnu.iir.bidata.martinbf.logic.services.MessageResolver.MessageResolverService;
+import ntnu.iir.bidata.martinbf.logic.services.MessageResolver.MessageHandlerService;
 import ntnu.iir.bidata.martinbf.logic.services.decoder.DecoderService;
 import ntnu.iir.bidata.martinbf.logic.services.encoder.EncoderService;
 
@@ -17,7 +17,7 @@ public class Client {
   private final Map<String, Connection> connections;
   private final DecoderService decoderService;
   private final EncoderService encoderService;
-  private final MessageResolverService messageResolverService;
+  private final MessageHandlerService messageHandlerService;
   private boolean isRunning;
 
 
@@ -25,19 +25,19 @@ public class Client {
    * Constructs a Client with the specified connection.
    *
    * @param connections            the map of available connections.
-   * @param decoderService         the decoder service for decoding messages.
-   * @param encoderService         the encoder service for encoding messages.
-   * @param messageResolverService the message resolver service for handling messages.
+   * @param decoderService         service for decoding messages.
+   * @param encoderService         service for encoding messages.
+   * @param messageHandlerService service for handling messages.
    */
 
   public Client(Map<String, Connection> connections,
                 DecoderService decoderService,
                 EncoderService encoderService,
-                MessageResolverService messageResolverService) {
+                MessageHandlerService messageHandlerService) {
     this.connections = connections;
     this.decoderService = decoderService;
     this.encoderService = encoderService;
-    this.messageResolverService = messageResolverService;
+    this.messageHandlerService = messageHandlerService;
   }
 
   /**
@@ -59,8 +59,7 @@ public class Client {
   private void runConnectionLoop(Connection connection) {
     byte[] receivedData = connection.receive();
     List<Message> messages = decoderService.decode(receivedData);
-    messageResolverService.resolve(messages);
-    List<Message> responses = messageResolverService.getResponses();
+    List<Message> responses = messageHandlerService.resolve(messages);
     byte[] encodedResponses = encoderService.encode(responses);
     connection.send(encodedResponses);
   }

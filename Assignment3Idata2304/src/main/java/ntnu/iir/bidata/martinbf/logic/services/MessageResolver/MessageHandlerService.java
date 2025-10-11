@@ -7,17 +7,12 @@ import java.util.List;
 /**
  * Resolves messages given to their respective handlers.
  */
-public interface MessageResolverService {
+public interface MessageHandlerService {
 
   /**
    * Resolves all messages in the list.
    *
    * @param messages the messages to resolve
    */
-  void resolve(List<Message> messages);
-
-  /**
-   * Returns the responses of the resolved messages.
-   */
-  List<Message> getResponses();
+  List<Message> resolve(List<Message> messages);
 }
