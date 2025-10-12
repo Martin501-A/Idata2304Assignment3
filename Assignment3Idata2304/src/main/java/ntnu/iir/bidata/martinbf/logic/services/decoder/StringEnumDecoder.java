@@ -1,43 +1,44 @@
 package ntnu.iir.bidata.martinbf.logic.services.decoder;
 
-import ntnu.iir.bidata.martinbf.entity.Message;
 import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
 
-import java.nio.charset.Charset;
-import java.util.List;
-
 /**
- * Decodes Strings into StringEnums.
+ * Decodes a string into a StringEnums.
  *
  * @param <D> The type of data to Decode.
  */
 public class StringEnumDecoder<D extends Enum<D>> implements Decoder<String,D> {
-  private final Charset charSet;
-  private final Class<D> decodeClass;
+  private final Class<D>  enumType;
 
   /**
    * Creates a new StringEncoder.
+   *
+   * @param enumType the type this decoder decodes to.
+   * @throws IllegalArgumentException if enumType is null.
    */
-  public StringEnumDecoder(Class<D> decodeClass, Charset charSet) {
-    if (decodeClass == null) {
-      throw new IllegalArgumentException("Decode class cannot be null");
-    }
-    if (charSet == null) {
-      throw new IllegalArgumentException("Charset cannot be null");
-    }
-    this.charSet = charSet;
-    this.decodeClass = decodeClass;
+  public StringEnumDecoder(Class<D> enumType) {
+    if (enumType == null) {
+      throw new IllegalArgumentException("enumType cannot be null");
+  }
+    this.enumType = enumType;
   }
 
   /**
    * Decodes the given byte data into an array of objects of the enum type.
    *
-   * @param data The byte data to decode.
-   * @return An array of objects of type D.
+   * @param data The data to transform into an enum.
+   * @return The enum corresponding to the data.
+   * @throws IllegalArgumentException if data is null or empty, or if data does not correspond to enum.
    */
-  //TODO if problem arises look here when it comes to Decoding
   @Override
   public D decode(String data) throws CorruptDataException {
-    throw new IllegalCallerException("Function not implemented");
+    if (data == null) {
+      throw new IllegalArgumentException("Data cannot be null");
+    }
+    if (data.isEmpty()) {
+      throw new IllegalArgumentException("Data cannot be empty");
+    }
+    if (enumType) {}
+    return foundEnum;
   }
 }

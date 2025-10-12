@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Represents a register of decoders where they are stored with a key.
+ *
+ * @author martin barth frøseth
  */
 public class DecoderRegistry {
   private static DecoderRegistry instance;
@@ -23,6 +25,7 @@ public class DecoderRegistry {
    * @param key the identifier for the decoder.
    * @param decoder the decoder to add.
    * @param erase erase existing decoder linked to the key if true.
+   * @throws IllegalArgumentException if key, decoder is null, key is empty, or key already exists.
    */
   public void registerDecoder(String key, Decoder<?,?> decoder, boolean erase) {
     if (key == null || key.isEmpty()) {
@@ -40,6 +43,7 @@ public class DecoderRegistry {
    *
    * @param currentKey the key already used as identifier.
    * @param alias the alias that the decoder is also supposed to be identified by.
+   * @throws IllegalArgumentException if currentKey, alias are null or empty or currentKey does not exist, alias already exists.
    */
   public void registerAlias(String currentKey, String alias) {
 

@@ -21,7 +21,7 @@ public enum TVPMessage {
   public static boolean hasValue(String value) {
     boolean hasValue = false;
     for (int i = 0; i < TVPMessage.values().length && !hasValue; i++) {
-      if (TVPMessage.values()[i].command.equals(value)) {
+      if (TVPMessage.values()[i].toString().equals(value)) {
         hasValue = true;
       }
     }

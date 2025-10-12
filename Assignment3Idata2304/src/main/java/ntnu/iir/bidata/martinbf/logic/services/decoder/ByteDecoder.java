@@ -13,6 +13,8 @@ import java.util.List;
  * Represents a decoder of messages which takes bytes array
  * of messages and turns it into messages by using strings and a charset.
  * Separators for each message \n, key and value are separated by colon(key:value).
+ *
+ * @author martin barth frøseth
  */
 public class ByteDecoder implements Decoder<byte[] ,List<Message>> {
   private final Charset charset;
@@ -64,10 +66,13 @@ public class ByteDecoder implements Decoder<byte[] ,List<Message>> {
     final List<Message> messages = new ArrayList<>();
     String stringData = new String(data, this.charset);
     String[] stringArray = stringData.split(separator);
-    for (int i = 0; i < stringArray.length; i++) {
-      String[] kv = stringArray[i].trim().split(kvSeparator, 2);
-      if (kv.length != 2 || kv[0].isEmpty()) {
+    for (String s : stringArray) {
+      String[] kv = s.trim().split(kvSeparator, 2);
+      if (kv.length != 2 || kv[0].isEmpty() || kv[1].isEmpty()) {
         throw new CorruptDataException("Transferred Message was not split into key value pair.");
+      }
+      if (kv[0].equals("null") || kv[1].equals("null")) {
+        throw new CorruptDataException("Transferred Message had Illegal null values");
       }
       messages.add(new Message(kv[0].trim(), kv[1].trim()));
     }

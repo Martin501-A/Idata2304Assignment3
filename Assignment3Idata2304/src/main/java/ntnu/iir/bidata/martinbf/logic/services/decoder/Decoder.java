@@ -9,6 +9,7 @@ import java.util.List;
  *
  * @param <I> the type to decode from.
  * @param <O> the type to decode to.
+ * @author martin barth frøseth
  */
 public interface Decoder<I, O> {
 
@@ -17,6 +18,7 @@ public interface Decoder<I, O> {
    *
    * @param data The byte data to parse.
    * @return An array of objects of type T.
+   * @throws CorruptDataException if the data has something unexpected in it.
    */
    O decode(I data) throws CorruptDataException;
 
