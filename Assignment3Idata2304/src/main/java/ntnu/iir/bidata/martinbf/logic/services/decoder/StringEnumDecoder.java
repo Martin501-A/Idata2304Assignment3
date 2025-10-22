@@ -38,7 +38,18 @@ public class StringEnumDecoder<D extends Enum<D>> implements Decoder<String,D> {
     if (data.isEmpty()) {
       throw new IllegalArgumentException("Data cannot be empty");
     }
-    if (enumType) {}
-    return foundEnum;
+    D enumValue = null;
+    boolean found = false;
+    D[] values = enumType.getEnumConstants();
+    for (int index = 0; index < values.length && !found; index++) {
+      if (values[index].toString().equals(data)) {
+        found = true;
+        enumValue = values[index];
+      }
+    }
+    if (enumValue == null) {
+      throw new CorruptDataException("Data was either sent wrong or corrupted during transfer");
+    }
+    return enumValue;
   }
 }
