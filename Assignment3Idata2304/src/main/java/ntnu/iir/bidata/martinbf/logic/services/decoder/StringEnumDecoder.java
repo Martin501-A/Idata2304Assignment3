@@ -3,7 +3,7 @@ package ntnu.iir.bidata.martinbf.logic.services.decoder;
 import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
 
 /**
- * Decodes a string into a StringEnums.
+ * Decodes a string into a StringEnum.
  *
  * @param <D> The type of data to Decode.
  */

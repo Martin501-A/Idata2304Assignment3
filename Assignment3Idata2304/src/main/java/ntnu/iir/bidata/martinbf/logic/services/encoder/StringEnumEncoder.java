@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @param <E> The type of data to encode.
  */
-public class StringEnumEncoder<E extends Enum<E>> implements Encoder<E> {
+public class StringEnumEncoder<E extends Enum<E>> implements Encoder<E[]> {
   private final Charset charSet;
 
   /**

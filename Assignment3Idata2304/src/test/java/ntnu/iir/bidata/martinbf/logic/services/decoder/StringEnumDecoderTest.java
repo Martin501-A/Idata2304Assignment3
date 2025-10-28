@@ -62,7 +62,7 @@ public class StringEnumDecoderTest {
    * Decode a given String
    */
   @Test
-  public void decode() {
+  public void decodeAString() {
     try {
       String test = TestEnum.TEST.toString();
       Decoder<String, TestEnum> decoder = new StringEnumDecoder<>(TestEnum.class);

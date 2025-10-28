@@ -11,5 +11,5 @@ public interface Encoder<T> {
    * @param data The array of objects to encode.
    * @return A byte array representing the encoded data.
    */
-  byte[] encode(T[] data);
+  byte[] encode(T data);
 }
