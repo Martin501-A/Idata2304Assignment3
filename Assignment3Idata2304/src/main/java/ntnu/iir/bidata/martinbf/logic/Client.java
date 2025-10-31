@@ -1,7 +1,7 @@
-package ntnu.iir.bidata.martinbf.logic.client;
+package ntnu.iir.bidata.martinbf.logic;
 
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
-import ntnu.iir.bidata.martinbf.logic.services.Resolver.ByteResolver;
+import ntnu.iir.bidata.martinbf.logic.services.MessageHandler;
 import ntnu.iir.bidata.martinbf.logic.services.decoder.DecoderService;
 import ntnu.iir.bidata.martinbf.logic.services.encoder.EncoderService;
 
@@ -15,7 +15,7 @@ public class Client {
   private final Map<String, Connection> connections;
   private final DecoderService decoderService;
   private final EncoderService encoderService;
-  private final ByteResolver byteResolver;
+  private final MessageHandler messageHandler;
   private boolean isRunning;
 
 
@@ -25,17 +25,16 @@ public class Client {
    * @param connections            the map of available connections.
    * @param decoderService         service for decoding messages.
    * @param encoderService         service for encoding messages.
-   * @param byteResolver service for handling messages.
    */
 
   public Client(Map<String, Connection> connections,
                 DecoderService decoderService,
                 EncoderService encoderService,
-                ByteResolver byteResolver) {
+                MessageHandler messageHandler) {
     this.connections = connections;
     this.decoderService = decoderService;
     this.encoderService = encoderService;
-    this.byteResolver = byteResolver;
+    this.messageHandler = messageHandler;
   }
 
   /**
@@ -56,7 +55,7 @@ public class Client {
    */
   private void runConnectionLoop(Connection connection) {
     byte[] receivedData = connection.receive();
-    byte[] responses = byteResolver.resolve(receivedData);
+    byte[] responses = messageHandler.handleMessage(receivedData);
     connection.send(responses);
   }
 
