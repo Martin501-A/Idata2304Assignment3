@@ -32,7 +32,7 @@ public class UDPConnection extends Connection {
    * @throws ConnectException if already connected.
    */
   @Override
-  protected void connect() throws ConnectException {
+  public void connect() throws ConnectException {
     if (isConnected()) {
       throw new IllegalCallerException();
     }
@@ -51,7 +51,7 @@ public class UDPConnection extends Connection {
    *
    */
   @Override
-  protected void disconnect() throws IOException {
+  public void disconnect() throws IOException {
     if (!isConnected()) {
       throw new IllegalArgumentException("Not connected");
     }

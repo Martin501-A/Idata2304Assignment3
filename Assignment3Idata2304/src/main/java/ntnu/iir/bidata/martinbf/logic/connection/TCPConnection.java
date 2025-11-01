@@ -42,7 +42,7 @@ public class TCPConnection extends Connection {
    * @throws ConnectException if already connected or cannot connect.
    */
   @Override
-  protected void connect() throws ConnectException {
+  public void connect() throws ConnectException {
     try {
       if (!isConnected()) {
         this.socket.connect(super.address);
@@ -79,7 +79,7 @@ public class TCPConnection extends Connection {
    * @throws IOException if an error happens whilst closing.
    */
   @Override
-  protected void disconnect() throws IOException {
+  public void disconnect() throws IOException {
     if (!isConnected()) {
       throw new IllegalArgumentException("Not connected");
     }

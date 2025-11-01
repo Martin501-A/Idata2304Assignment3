@@ -33,12 +33,12 @@ public abstract class Connection implements Runnable, AutoCloseable {
   /**
    * Connects to the network.
    */
-  protected abstract void connect() throws ConnectException;
+  public abstract void connect() throws ConnectException;
 
   /**
    * Disconnects from the network.
    */
-  protected abstract void disconnect() throws IOException;
+  public abstract void disconnect() throws IOException;
 
   /**
    * Returns the socket address of the connection.
