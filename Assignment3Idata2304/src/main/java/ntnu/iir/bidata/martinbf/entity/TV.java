@@ -1,6 +1,6 @@
 package ntnu.iir.bidata.martinbf.entity;
 
-import ntnu.iir.bidata.martinbf.datatypes.CircularIterator;
+import ntnu.iir.bidata.martinbf.entity.datatypes.CircularIterator;
 
 import java.util.ArrayList;
 import java.util.List;

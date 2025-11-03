@@ -8,7 +8,7 @@ import java.util.List;
  * The remote holds knows the current TV channel.
  */
 public class Remote {
-  private Channel currentChannel;
+  private String currentChannel;
   private List<RemoteSubscriber> subscribers;
 
   /**
@@ -24,7 +24,7 @@ public class Remote {
    *
    * @param channel the new current channel
    */
-  public void setCurrentChannel(Channel channel) {
+  public void setCurrentChannel(String channel) {
     if (channel == null) {
       throw new IllegalArgumentException("Channel cannot be null");
     }
@@ -36,7 +36,7 @@ public class Remote {
    *
    * @return the current channel
    */
-  public Channel getCurrentChannel() {
+  public String getCurrentChannel() {
     return this.currentChannel;
   }
 

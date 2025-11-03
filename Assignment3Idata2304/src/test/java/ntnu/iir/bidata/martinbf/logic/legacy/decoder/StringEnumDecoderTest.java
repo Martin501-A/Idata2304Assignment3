@@ -1,7 +1,9 @@
-package ntnu.iir.bidata.martinbf.logic.services.decoder;
+package ntnu.iir.bidata.martinbf.logic.legacy.decoder;
 
+import ntnu.iir.bidata.martinbf.legacy.logic.decoder.Decoder;
+import ntnu.iir.bidata.martinbf.legacy.logic.decoder.StringEnumDecoder;
 import ntnu.iir.bidata.martinbf.logic.TVPMessage;
-import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
+import ntnu.iir.bidata.martinbf.legacy.logic.CorruptDataException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

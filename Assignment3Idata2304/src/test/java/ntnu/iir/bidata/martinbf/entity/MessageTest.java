@@ -1,5 +1,6 @@
 package ntnu.iir.bidata.martinbf.entity;
 
+import ntnu.iir.bidata.martinbf.legacy.entity.Message;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

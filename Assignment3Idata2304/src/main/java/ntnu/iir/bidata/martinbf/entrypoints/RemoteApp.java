@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.presentation;
+package ntnu.iir.bidata.martinbf.entrypoints;
 
 import javafx.application.Application;
 import javafx.scene.control.Label;

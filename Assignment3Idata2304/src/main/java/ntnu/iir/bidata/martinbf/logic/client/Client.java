@@ -1,39 +1,44 @@
-package ntnu.iir.bidata.martinbf.logic;
+package ntnu.iir.bidata.martinbf.logic.client;
 
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
-import ntnu.iir.bidata.martinbf.logic.services.MessageHandler;
-import ntnu.iir.bidata.martinbf.logic.services.decoder.DecoderService;
-import ntnu.iir.bidata.martinbf.logic.services.encoder.EncoderService;
+import ntnu.iir.bidata.martinbf.logic.connection.ConnectionHandler;
+import ntnu.iir.bidata.martinbf.logic.iodata.DataBroadcaster;
+import ntnu.iir.bidata.martinbf.logic.iodata.DataReceiver;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Represents a client in the system.'
+ * Represents a client in the system.
+ * The client delegates the order of operations for the system when it comes to internet connections.
  *
  */
-public class Client {
+public class Client implements DataBroadcaster, ConnectionHandler {
   private final List<Connection> connections;
-  private final MessageHandler messageHandler;
-  private boolean isRunning;
-
+  private final DataReceiver receiver;
 
   /**
-   * Constructs a Client with the specified connection.
+   * Constructs a Client with the specified connections.
    *
-   * @param connections the map of available connections.
-   *
+   * @param connections the list of connections.
+   * @param receiver handles received data.
    */
-
-  public Client(List<Connection> connections,
-                MessageHandler messageHandler) {
+  public Client(List<Connection> connections,  DataReceiver receiver) {
+    if  (connections == null || receiver == null) {
+      throw new IllegalArgumentException("connections or messageHandler cannot be null");
+    }gi
+    if (connections.isEmpty()) {
+      throw new IllegalArgumentException("connections cannot be empty");
+    }
     this.connections = connections;
-    this.messageHandler = messageHandler;
+    this.receiver = receiver;
+    connections.forEach((Connection connection) -> {
+      connection.setHandler(this);
+    });
   }
 
   /**
-   * Starts the client and begins processing Connections.
+   * Starts the client by starting all connections.
    */
   public void start() {
     for (Connection connection : connections) {
@@ -50,10 +55,27 @@ public class Client {
   }
 
   /**
+   * Sends data to all connections.
+   */
+  @Override
+  public void broadcast(byte[] data) {
+    for (Connection connection : connections) {
+      connection.send(data);
+    }
+  }
+
+  /**
+   * Handles a connections received data.
+   */
+  @Override
+  public void handle(Connection connection) {
+    this.receiver.receive(connection.receive());
+  }
+
+  /**
    * Stops the client and stops its connections.
    */
   public void stop() {
-    this.isRunning = false;
     for (Connection connection : connections) {
       try {
         connection.close();

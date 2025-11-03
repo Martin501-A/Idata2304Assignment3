@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf;
+package ntnu.iir.bidata.martinbf.entrypoints;
 
 /**
  * Runs the TCPServerFinderProtocol TV server application.

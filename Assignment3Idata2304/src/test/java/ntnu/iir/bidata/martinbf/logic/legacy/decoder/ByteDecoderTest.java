@@ -1,7 +1,9 @@
-package ntnu.iir.bidata.martinbf.logic.services.decoder;
+package ntnu.iir.bidata.martinbf.logic.legacy.decoder;
 
-import ntnu.iir.bidata.martinbf.entity.Message;
-import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
+import ntnu.iir.bidata.martinbf.legacy.entity.Message;
+import ntnu.iir.bidata.martinbf.legacy.logic.CorruptDataException;
+import ntnu.iir.bidata.martinbf.legacy.logic.decoder.ByteDecoder;
+import ntnu.iir.bidata.martinbf.legacy.logic.decoder.Decoder;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

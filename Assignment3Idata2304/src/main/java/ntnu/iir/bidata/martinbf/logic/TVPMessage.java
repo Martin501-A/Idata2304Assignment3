@@ -8,6 +8,5 @@ import ntnu.iir.bidata.martinbf.entity.Channel;
 public enum TVPMessage {
   POWER,
   CHANNEL_UP,
-  CHANNEL_DOWN,
-  CONNECT;
+  CHANNEL_DOWN;
 }
