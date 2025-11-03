@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.services;
+package ntnu.iir.bidata.martinbf.legacy.logic;
 
 /**
  * Handles ClientMessages, both output and input.

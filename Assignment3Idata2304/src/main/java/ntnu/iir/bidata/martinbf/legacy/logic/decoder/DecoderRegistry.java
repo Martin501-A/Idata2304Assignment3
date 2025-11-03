@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.services.decoder;
+package ntnu.iir.bidata.martinbf.legacy.logic.decoder;
 
 import java.util.HashMap;
 import java.util.Map;

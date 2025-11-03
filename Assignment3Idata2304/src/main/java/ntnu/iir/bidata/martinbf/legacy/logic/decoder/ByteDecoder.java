@@ -1,8 +1,8 @@
-package ntnu.iir.bidata.martinbf.logic.services.decoder;
+package ntnu.iir.bidata.martinbf.legacy.logic.decoder;
 
 
-import ntnu.iir.bidata.martinbf.entity.Message;
-import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
+import ntnu.iir.bidata.martinbf.legacy.entity.Message;
+import ntnu.iir.bidata.martinbf.legacy.logic.CorruptDataException;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

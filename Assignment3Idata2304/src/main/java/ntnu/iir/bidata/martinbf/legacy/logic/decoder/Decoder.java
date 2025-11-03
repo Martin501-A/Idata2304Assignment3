@@ -1,8 +1,6 @@
-package ntnu.iir.bidata.martinbf.logic.services.decoder;
+package ntnu.iir.bidata.martinbf.legacy.logic.decoder;
 
-import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
-
-import java.util.List;
+import ntnu.iir.bidata.martinbf.legacy.logic.CorruptDataException;
 
 /**
  * A generic parser interface for parsing byte data into objects of type T.

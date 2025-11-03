@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.services;
+package ntnu.iir.bidata.martinbf.legacy.logic;
 
 /**
  * Handles a message for a Recipient.

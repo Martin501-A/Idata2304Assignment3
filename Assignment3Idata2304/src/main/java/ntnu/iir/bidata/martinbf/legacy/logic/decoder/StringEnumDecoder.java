@@ -1,6 +1,6 @@
-package ntnu.iir.bidata.martinbf.logic.services.decoder;
+package ntnu.iir.bidata.martinbf.legacy.logic.decoder;
 
-import ntnu.iir.bidata.martinbf.logic.services.CorruptDataException;
+import ntnu.iir.bidata.martinbf.legacy.logic.CorruptDataException;
 
 /**
  * Decodes a string into a StringEnum.

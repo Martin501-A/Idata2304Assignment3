@@ -1,6 +1,6 @@
-package ntnu.iir.bidata.martinbf.logic.services.encoder;
+package ntnu.iir.bidata.martinbf.legacy.logic.encoder;
 
-import ntnu.iir.bidata.martinbf.entity.Message;
+import ntnu.iir.bidata.martinbf.legacy.entity.Message;
 
 import java.util.List;
 

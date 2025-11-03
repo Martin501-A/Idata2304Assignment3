@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.entity;
+package ntnu.iir.bidata.martinbf.legacy.entity;
 
 /**
  * Represents a message sent or received by the client or Server.

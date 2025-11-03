@@ -1,4 +1,4 @@
-package ntnu.iir.bidata.martinbf.logic.services;
+package ntnu.iir.bidata.martinbf.legacy.logic;
 
 /**
  * This means that an invalid message was sent to a recipient.
