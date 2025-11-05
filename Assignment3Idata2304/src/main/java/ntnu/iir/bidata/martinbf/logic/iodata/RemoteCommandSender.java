@@ -1,12 +1,12 @@
 package ntnu.iir.bidata.martinbf.logic.iodata;
 
-import ntnu.iir.bidata.martinbf.logic.TVPMessage;
+import ntnu.iir.bidata.martinbf.logic.TVMessage;
 
 /**
  * Represents a sender of remote commands to the television.
  * This class also encodes the message.
  */
-public class RemoteCommandSender implements DataSender<TVPMessage> {
+public class RemoteCommandSender implements DataSender<TVMessage> {
   private DataBroadcaster broadcaster;
 
   /**
@@ -27,7 +27,7 @@ public class RemoteCommandSender implements DataSender<TVPMessage> {
    * @param data the data to encode and send.
    */
   @Override
-  public void sendData(TVPMessage data) {
+  public void sendData(TVMessage data) {
     if (data == null) {
       throw new IllegalArgumentException("data is null");
     }

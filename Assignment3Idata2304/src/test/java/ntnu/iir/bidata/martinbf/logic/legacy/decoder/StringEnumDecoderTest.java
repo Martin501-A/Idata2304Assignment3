@@ -2,7 +2,7 @@ package ntnu.iir.bidata.martinbf.logic.legacy.decoder;
 
 import ntnu.iir.bidata.martinbf.legacy.logic.decoder.Decoder;
 import ntnu.iir.bidata.martinbf.legacy.logic.decoder.StringEnumDecoder;
-import ntnu.iir.bidata.martinbf.logic.TVPMessage;
+import ntnu.iir.bidata.martinbf.logic.TVMessage;
 import ntnu.iir.bidata.martinbf.legacy.logic.CorruptDataException;
 import org.junit.jupiter.api.Test;
 
@@ -46,8 +46,8 @@ public class StringEnumDecoderTest {
      */
     public static boolean hasValue(String value) {
       boolean hasValue = false;
-      for (int i = 0; i < TVPMessage.values().length && !hasValue; i++) {
-        if (TVPMessage.values()[i].toString().equals(value)) {
+      for (int i = 0; i < TVMessage.values().length && !hasValue; i++) {
+        if (TVMessage.values()[i].toString().equals(value)) {
           hasValue = true;
         }
       }
