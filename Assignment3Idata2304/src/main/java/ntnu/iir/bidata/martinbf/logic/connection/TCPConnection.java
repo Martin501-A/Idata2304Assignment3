@@ -99,7 +99,6 @@ public class TCPConnection extends Connection {
       if (readBytes > 0) {
         byte[] received = Arrays.copyOf(buffer, readBytes);
         super.incomingQueue.offer(received);
-        super.handler.handle(super.createIncomingEvent());
       }
     } catch (SocketTimeoutException e) {
       //Handle this when applicable

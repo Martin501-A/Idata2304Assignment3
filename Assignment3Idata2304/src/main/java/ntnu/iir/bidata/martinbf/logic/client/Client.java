@@ -1,27 +1,21 @@
 package ntnu.iir.bidata.martinbf.logic.client;
 
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
-import ntnu.iir.bidata.martinbf.logic.connection.ConnectionHandler;
 import ntnu.iir.bidata.martinbf.logic.iodata.DataBroadcaster;
 import ntnu.iir.bidata.martinbf.logic.iodata.DataHandler;
-import ntnu.iir.bidata.martinbf.logic.iodata.IOEvent;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Represents a client in the system.
  * The client delegates the order of operations for the system when it comes to internet connections.
  *
  */
-public class Client implements DataBroadcaster, ConnectionHandler {
-  private final BlockingQueue<IOEvent> eventsQueue;
+public class Client implements DataBroadcaster, Runnable {
   private final List<Connection> connections;
   private final DataHandler receiver;
+  private volatile boolean running = false;
 
   /**
    * Constructs a Client with the specified connections.
@@ -37,11 +31,7 @@ public class Client implements DataBroadcaster, ConnectionHandler {
       throw new IllegalArgumentException("connections cannot be empty");
     }
     this.connections = connections;
-    this.eventsQueue = new PriorityBlockingQueue<>();
     this.receiver = receiver;
-    connections.forEach((Connection connection) -> {
-      connection.setHandler(this);
-    });
   }
 
   /**
@@ -59,6 +49,7 @@ public class Client implements DataBroadcaster, ConnectionHandler {
         throw new RuntimeException("Not Implemented Exception handling");
       }
     }
+    new Thread(this).start();
   }
 
   /**
@@ -69,13 +60,6 @@ public class Client implements DataBroadcaster, ConnectionHandler {
     for (Connection connection : connections) {
       connection.send(data);
     }
-  }
-
-  /**
-   * Handles a connections received data.
-   */
-  @Override
-  public void handle(IOEvent event) {
   }
 
   /**
@@ -92,12 +76,17 @@ public class Client implements DataBroadcaster, ConnectionHandler {
   }
 
   /**
-   * Adds an event to the Queue.
+   * Runs this client to start handling received data.
    */
-  public void addEvent(IOEvent event) {
-    if (event == null) {
-      throw new IllegalArgumentException("event cannot be null");
+  @Override
+  public void run() {
+    while (running) {
+      for (Connection conn : connections) {
+        byte[] data;
+        while ((data = conn.receive()) != null) {
+          receiver.handleReceivedData(data);
+        }
+      }
     }
-    this.eventsQueue.add(event);
   }
 }
