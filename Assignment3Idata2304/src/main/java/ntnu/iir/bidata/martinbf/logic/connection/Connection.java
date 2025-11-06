@@ -135,4 +135,9 @@ public abstract class Connection implements Runnable, AutoCloseable {
       handleIncomingData();
       handleOutgoingData();
   }
+
+  /**
+   * Creates an incoming event.
+   */
+
 }

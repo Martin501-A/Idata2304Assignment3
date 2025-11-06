@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class Remote {
   private String currentChannel;
-  private List<RemoteSubscriber> subscribers;
+  private final List<RemoteSubscriber> subscribers;
 
   /**
    * Instantiates a new Remote.
    */
   public Remote() {
-    setCurrentChannel(Channel.NONE);
+    setCurrentChannel(Channel.NONE.toString());
     subscribers = new ArrayList<>();
   }
 
