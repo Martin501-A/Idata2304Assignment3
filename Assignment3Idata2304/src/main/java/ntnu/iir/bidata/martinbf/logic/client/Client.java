@@ -3,7 +3,7 @@ package ntnu.iir.bidata.martinbf.logic.client;
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
 import ntnu.iir.bidata.martinbf.logic.connection.ConnectionHandler;
 import ntnu.iir.bidata.martinbf.logic.iodata.DataBroadcaster;
-import ntnu.iir.bidata.martinbf.logic.iodata.DataReceiver;
+import ntnu.iir.bidata.martinbf.logic.iodata.DataHandler;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Client implements DataBroadcaster, ConnectionHandler {
   private final List<Connection> connections;
-  private final DataReceiver receiver;
+  private final DataHandler receiver;
 
   /**
    * Constructs a Client with the specified connections.
@@ -23,10 +23,10 @@ public class Client implements DataBroadcaster, ConnectionHandler {
    * @param connections the list of connections.
    * @param receiver handles received data.
    */
-  public Client(List<Connection> connections,  DataReceiver receiver) {
+  public Client(List<Connection> connections,  DataHandler receiver) {
     if  (connections == null || receiver == null) {
       throw new IllegalArgumentException("connections or messageHandler cannot be null");
-    }gi
+    }
     if (connections.isEmpty()) {
       throw new IllegalArgumentException("connections cannot be empty");
     }
@@ -69,7 +69,7 @@ public class Client implements DataBroadcaster, ConnectionHandler {
    */
   @Override
   public void handle(Connection connection) {
-    this.receiver.receive(connection.receive());
+    this.receiver.handleReceivedData(connection.receive());
   }
 
   /**

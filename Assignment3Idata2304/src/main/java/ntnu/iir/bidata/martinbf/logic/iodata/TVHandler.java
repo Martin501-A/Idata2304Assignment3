@@ -8,13 +8,13 @@ import java.util.Optional;
 /**
  * Is responsible for handling the byte input from the server.
  */
-public class TVReceiver implements DataReceiver {
+public class TVHandler implements DataHandler {
   private TVCommandActor actor;
 
   /**
    * Instantiates the receiver of TVData.
    */
-  public TVReceiver(TVCommandActor actor) {
+  public TVHandler(TVCommandActor actor) {
     if (actor == null) {
       throw new IllegalArgumentException("Actor cannot be null");
     }
@@ -28,7 +28,7 @@ public class TVReceiver implements DataReceiver {
    * @param data the data to receive from TCP/UDP.
    */
   @Override
-  public void receive(byte[] data) {
+  public void handleReceivedData(byte[] data) {
     if (data.length == 0) {
       throw new IllegalArgumentException("empty data was sent");
     }

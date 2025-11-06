@@ -5,10 +5,10 @@ import ntnu.iir.bidata.martinbf.entity.Remote;
 /**
  * Represents a receiver of data from the television to the remote.
  */
-public class RemoteReceiver implements DataReceiver {
+public class RemoteHandler implements DataHandler {
   private final Remote remote;
 
-  public RemoteReceiver(Remote remote) {
+  public RemoteHandler(Remote remote) {
     if (remote == null) {
       throw new IllegalArgumentException("Remote object cannot be null");
     }
@@ -16,7 +16,7 @@ public class RemoteReceiver implements DataReceiver {
   }
 
   @Override
-  public void receive(byte[] data) {
+  public void handleReceivedData(byte[] data) {
     this.remote.setCurrentChannel(new String(data));
   }
 }
