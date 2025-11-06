@@ -33,7 +33,7 @@ public class TVHandler implements DataHandler {
       throw new IllegalArgumentException("empty data was sent");
     }
     for (byte bMsg: data) {
-      Optional<TVMessage> msg = this.getMessage(bMsg);
+      Optional<TVMessage> msg = this.createMessage(bMsg);
       msg.ifPresent(tvMessage -> this.actor.HandleCommand(tvMessage));
     }
   }
@@ -43,7 +43,7 @@ public class TVHandler implements DataHandler {
    *
    * @param bMsg a number representing a TVMessage.
    */
-  public Optional<TVMessage> getMessage(byte bMsg) {
+  public Optional<TVMessage> createMessage(byte bMsg) {
     return switch (bMsg) {
       case 1 -> {
         yield Optional.of(TVMessage.POWER);

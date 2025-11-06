@@ -7,9 +7,10 @@ import java.util.List;
 
 /**
  * Represents a Television with channels and a power option.
+ * The TV will update its subscribers if it has a change in state.
  */
 public class TV {
-  private List<Channel> channels;
+  private final List<Channel> channels;
   private boolean powerStatus;
   private CircularIterator<Channel> channelIterator;
   private final List<TVSubscriber> subscribers;
@@ -48,7 +49,9 @@ public class TV {
    */
   public void power() {
     this.powerStatus = !this.powerStatus;
-    notifySubscribers();
+    if (this.powerStatus) {
+      notifySubscribers();
+    }
   }
 
   /**
