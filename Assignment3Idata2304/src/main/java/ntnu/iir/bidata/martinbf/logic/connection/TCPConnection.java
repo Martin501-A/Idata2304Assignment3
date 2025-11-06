@@ -22,7 +22,7 @@ public class TCPConnection extends Connection {
   /**
    * Creates a new TCPConnection from an address.
    */
-  public TCPConnection(SocketAddress address) throws IOException {
+  public TCPConnection(SocketAddress address) {
     super(address);
     this.socket = new Socket();
   }
@@ -46,7 +46,6 @@ public class TCPConnection extends Connection {
     try {
       if (!isConnected()) {
         this.socket.connect(super.address);
-        this.socket.setSoTimeout(10);
       }
       if (isConnected()) {
         this.out = new DataOutputStream(this.socket.getOutputStream());

@@ -32,7 +32,7 @@ public class ConnectionFactory {
    * @param address the remote address this connection connects to.
    * @return a new Connection of TCP that needs to connect.
    */
-  public Connection createTCPConnection(SocketAddress address) throws IOException {
+  public Connection createTCPConnection(SocketAddress address) {
     return new TCPConnection(address);
   }
 

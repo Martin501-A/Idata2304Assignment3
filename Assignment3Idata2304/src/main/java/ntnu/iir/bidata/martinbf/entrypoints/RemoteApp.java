@@ -8,6 +8,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntnu.iir.bidata.martinbf.entity.Remote;
+import ntnu.iir.bidata.martinbf.logic.TVMessage;
+import ntnu.iir.bidata.martinbf.logic.client.Client;
+import ntnu.iir.bidata.martinbf.logic.connection.Connection;
+import ntnu.iir.bidata.martinbf.logic.connection.ConnectionFactory;
+import ntnu.iir.bidata.martinbf.logic.iodata.DataHandler;
+import ntnu.iir.bidata.martinbf.logic.iodata.DataSender;
+import ntnu.iir.bidata.martinbf.logic.iodata.RemoteCommandSender;
+import ntnu.iir.bidata.martinbf.logic.iodata.RemoteHandler;
+import ntnu.iir.bidata.martinbf.presentation.RemoteCommandController;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -49,18 +58,21 @@ public class RemoteApp extends Application {
     addresses.add(new InetSocketAddress(ip, port));
 
     remote = new Remote();
-
     channelField.setEditable(false);
+    DataHandler handler = new RemoteHandler(remote);
+    Client client = new Client(createConnections(addresses), handler);
+    DataSender<TVMessage> sender = new RemoteCommandSender(client);
+    RemoteCommandController controller = new RemoteCommandController(sender);
 
     // Buttons
     Button powerButton = new Button("Power");
     Button channelUpButton = new Button("Channel +");
     Button channelDownButton = new Button("Channel -");
-    /*
-    powerButton.setOnAction(e -> );
-    channelUpButton.setOnAction(e -> );
-    channelDownButton.setOnAction(e -> );
 
+    powerButton.setOnAction(e -> controller.sendPower());
+    channelUpButton.setOnAction(e -> controller.sendChannelUp());
+    channelDownButton.setOnAction(e -> controller.sendChannelDown());
+    /*
     channelField.textProperty().bind(() -> {});
     */
     VBox root = new VBox(10, powerButton, channelUpButton, channelDownButton, channelField);
@@ -71,5 +83,15 @@ public class RemoteApp extends Application {
     stage.show();
 
     // Start remote client
+    client.start();
+  }
+
+  private List<Connection> createConnections(List<InetSocketAddress> addresses) {
+    List<Connection> cons = new ArrayList<>();
+    ConnectionFactory factory = ConnectionFactory.getInstance();
+    for (InetSocketAddress address: addresses) {
+      cons.add(factory.createTCPConnection(address)); //TCP or UDP here Kinda.
+    }
+    return cons;
   }
 }

@@ -38,6 +38,7 @@ public class Client implements DataBroadcaster, Runnable {
    * Starts the client by starting all connections.
    */
   public void start() {
+    this.running = true;
     for (Connection connection : connections) {
       try {
         if (!connection.isConnected()) {
@@ -46,7 +47,7 @@ public class Client implements DataBroadcaster, Runnable {
         Thread thread = new Thread(connection);
         thread.start();
       } catch (IOException e) {
-        throw new RuntimeException("Not Implemented Exception handling");
+        e.printStackTrace();
       }
     }
     new Thread(this).start();
