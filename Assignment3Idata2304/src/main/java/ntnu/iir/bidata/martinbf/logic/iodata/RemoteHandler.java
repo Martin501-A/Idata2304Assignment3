@@ -16,7 +16,7 @@ public class RemoteHandler implements DataHandler {
   }
 
   @Override
-  public void handleReceivedData(byte[] data) {
+  public synchronized void handleReceivedData(byte[] data) {
     this.remote.setCurrentChannel(new String(data));
   }
 }

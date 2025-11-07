@@ -11,4 +11,5 @@ public interface DataHandler {
    * @param data the received data to handle.
    */
   void handleReceivedData(byte[] data);
+
 }

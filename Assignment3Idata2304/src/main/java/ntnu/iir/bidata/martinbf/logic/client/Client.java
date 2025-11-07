@@ -1,6 +1,7 @@
 package ntnu.iir.bidata.martinbf.logic.client;
 
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
+import ntnu.iir.bidata.martinbf.logic.connection.ConnectionHandler;
 import ntnu.iir.bidata.martinbf.logic.iodata.DataBroadcaster;
 import ntnu.iir.bidata.martinbf.logic.iodata.DataHandler;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * The client delegates the order of operations for the system when it comes to internet connections.
  *
  */
-public class Client implements DataBroadcaster, Runnable {
+public class Client implements DataBroadcaster, Runnable, ConnectionHandler {
   private final List<Connection> connections;
   private final DataHandler receiver;
   private volatile boolean running = false;
@@ -32,6 +33,9 @@ public class Client implements DataBroadcaster, Runnable {
     }
     this.connections = connections;
     this.receiver = receiver;
+    for (Connection connection : connections) {
+      connection.setHandler(this);
+    }
   }
 
   /**
@@ -61,6 +65,20 @@ public class Client implements DataBroadcaster, Runnable {
     for (Connection connection : connections) {
       connection.send(data);
     }
+  }
+
+  /**
+   * Handles a Connections request.
+   */
+  @Override
+  public void handle(Connection connection) {
+    if (connection == null) {
+      throw new IllegalArgumentException("connection cannot be null");
+    }
+    if (!connection.isConnected()) {
+      throw new IllegalArgumentException("connection is not connected");
+    }
+    this.receiver.handleReceivedData(connection.receive());
   }
 
   /**

@@ -15,6 +15,7 @@ public abstract class Connection implements Runnable, AutoCloseable {
   protected final Queue<byte[]> outgoingQueue;
   protected final Queue<byte[]> incomingQueue;
   protected SocketAddress address;
+  protected ConnectionHandler handler;
 
   /**
    * Constructs a Connection with specified input and output queues.
@@ -25,9 +26,13 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (address == null) {
       throw new IllegalArgumentException("Address cannot be null");
     }
+    if  (handler == null) {
+      throw new IllegalArgumentException("ConnectionHandler cannot be null");
+    }
     this.outgoingQueue = new ConcurrentLinkedQueue<>();
     this.incomingQueue = new ConcurrentLinkedQueue<>();
     this.address = address;
+    this.handler = null;
   }
 
   /**
@@ -123,6 +128,16 @@ public abstract class Connection implements Runnable, AutoCloseable {
     }
       handleIncomingData();
       handleOutgoingData();
+  }
+
+  /**
+   * Sets the handler.
+   */
+  public void setHandler(ConnectionHandler handler) {
+    if (handler == null) {
+      throw new IllegalArgumentException("ConnectionHandler cannot be null");
+    }
+    this.handler = handler;
   }
 
 }
