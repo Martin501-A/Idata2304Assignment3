@@ -12,11 +12,11 @@ public class ChannelSender implements DataSender<Channel>, TVSubscriber {
   private final DataBroadcaster broadcaster;
 
   /**
-   * Creates a channelsender with a tv and broadcaster.
+   * Creates a channelSender with a tv and broadcaster.
    * @param tv
    * @param broadcaster
    */
-  private ChannelSender(TV tv, DataBroadcaster broadcaster) {
+  public ChannelSender(TV tv, DataBroadcaster broadcaster) {
     if  (broadcaster == null) {
       throw new IllegalArgumentException("DataBroadcaster cannot be null");
     }

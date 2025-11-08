@@ -31,7 +31,7 @@ public class TCPConnection extends Connection {
    * Creates a new TCPConnection from a socket.
    * If socket is already connected the connection is set as connected.
    */
-  public TCPConnection(Socket socket) throws IOException {
+  public TCPConnection(Socket socket) {
     super(socket.getRemoteSocketAddress());
     this.socket = socket;
   }

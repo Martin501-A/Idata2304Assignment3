@@ -42,7 +42,7 @@ public class ConnectionFactory {
    * @param socket an already connected socket.
    * @return a new connection of TCP that is already connected.
    */
-  public Connection createSocketConnection(Socket socket) throws IOException {
+  public Connection createSocketConnection(Socket socket) {
     return new TCPConnection(socket);
   }
 

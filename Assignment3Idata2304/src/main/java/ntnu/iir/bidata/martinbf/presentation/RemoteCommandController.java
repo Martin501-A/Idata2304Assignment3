@@ -12,6 +12,7 @@ public class RemoteCommandController {
 
   /**
    * Instantiates a RemoteCommandController with a sender that sends the commands.
+   *
    * @param sender the sender that sends the command.
    */
   public RemoteCommandController(DataSender<TVMessage> sender) {

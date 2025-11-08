@@ -6,6 +6,7 @@ import ntnu.iir.bidata.martinbf.logic.iodata.DataBroadcaster;
 import ntnu.iir.bidata.martinbf.logic.iodata.DataHandler;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class Client implements DataBroadcaster, Runnable, ConnectionHandler {
     if (connections.isEmpty()) {
       throw new IllegalArgumentException("connections cannot be empty");
     }
-    this.connections = connections;
+    this.connections = Collections.synchronizedList(connections);
     this.receiver = receiver;
     for (Connection connection : connections) {
       connection.setHandler(this);
