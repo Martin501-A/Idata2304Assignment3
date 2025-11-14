@@ -39,6 +39,7 @@ public class ServerFront implements TVSubscriber {
    */
   public void start() {
     this.server.start();
+    update();
   }
 
 

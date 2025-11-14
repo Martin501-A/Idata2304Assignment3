@@ -90,7 +90,7 @@ public class RemoteApp extends Application {
     List<Connection> cons = new ArrayList<>();
     ConnectionFactory factory = ConnectionFactory.getInstance();
     for (InetSocketAddress address: addresses) {
-      cons.add(factory.createTCPConnection(address)); //TCP or UDP here Kinda.
+      cons.add(factory.createTCPConnection(address)); //TCP or UDP here.
     }
     return cons;
   }

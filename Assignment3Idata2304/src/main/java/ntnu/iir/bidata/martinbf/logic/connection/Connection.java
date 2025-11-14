@@ -26,9 +26,6 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (address == null) {
       throw new IllegalArgumentException("Address cannot be null");
     }
-    if  (handler == null) {
-      throw new IllegalArgumentException("ConnectionHandler cannot be null");
-    }
     this.outgoingQueue = new ConcurrentLinkedQueue<>();
     this.incomingQueue = new ConcurrentLinkedQueue<>();
     this.address = address;

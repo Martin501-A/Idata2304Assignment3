@@ -16,8 +16,6 @@ import java.util.Arrays;
  */
 public class TCPConnection extends Connection {
   private final Socket socket;
-  private OutputStream out;
-  private InputStream in;
 
   /**
    * Creates a new TCPConnection from an address.
@@ -46,10 +44,6 @@ public class TCPConnection extends Connection {
     try {
       if (!isConnected()) {
         this.socket.connect(super.address);
-      }
-      if (isConnected()) {
-        this.out = new DataOutputStream(this.socket.getOutputStream());
-        this.in = new DataInputStream(this.socket.getInputStream());
       }
     } catch (IOException e) {
       try {
@@ -92,12 +86,14 @@ public class TCPConnection extends Connection {
    */
   @Override
   protected void handleIncomingData() {
-    try {
-      byte[] buffer = new byte[1024];
-      int readBytes = in.read(buffer);
-      if (readBytes > 0) {
-        byte[] received = Arrays.copyOf(buffer, readBytes);
-        super.incomingQueue.offer(received);
+    try (InputStream in = socket.getInputStream()) {
+      if (in.available() != 0) {
+        int bit = in.read();
+        if (bit != -1) {
+          byte[] bytes = new byte[1];
+          bytes[0] = (byte) bit;
+          super.incomingQueue.offer(bytes);
+        }
       }
     } catch (SocketTimeoutException e) {
       //Handle this when applicable
@@ -133,10 +129,14 @@ public class TCPConnection extends Connection {
    * Sends data over the connection.
    */
   private void sendData(byte[] data) throws IOException {
-    if (data == null) {
-      throw new IllegalArgumentException("Data is null");
+    try (OutputStream out = socket.getOutputStream()) {
+      if (data == null) {
+        throw new IllegalArgumentException("Data is null");
+      }
+      out.write(data);
+      out.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    out.write(data);
-    out.flush();
   }
 }
