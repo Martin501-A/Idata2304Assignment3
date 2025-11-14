@@ -94,7 +94,8 @@ public class TCPConnection extends Connection {
         running = false;
       }
       byte[] data = Arrays.copyOf(buffer, bytesRead);
-      super.incomingQueue.offer(data);
+      super.incomingQueue.add(data);
+      super.handler.handle(this);
     } catch (SocketTimeoutException e) {
       //Handle this when applicable
     } catch (IOException e) {
@@ -110,7 +111,6 @@ public class TCPConnection extends Connection {
     try {
       byte[] data = super.outgoingQueue.take();
       if (data != null) {
-        System.out.println(data);
         sendData(data);
       }
     } catch (InterruptedException e) {

@@ -14,7 +14,7 @@ import java.util.List;
  * The client delegates the order of operations for the system when it comes to internet connections.
  *
  */
-public class Client implements DataBroadcaster, Runnable, ConnectionHandler {
+public class Client implements DataBroadcaster, ConnectionHandler {
   private final List<Connection> connections;
   private final DataHandler receiver;
   private volatile boolean running = false;
@@ -55,7 +55,6 @@ public class Client implements DataBroadcaster, Runnable, ConnectionHandler {
         e.printStackTrace();
       }
     }
-    new Thread(this).start();
   }
 
   /**
@@ -73,13 +72,17 @@ public class Client implements DataBroadcaster, Runnable, ConnectionHandler {
    */
   @Override
   public void handle(Connection connection) {
-    if (connection == null) {
-      throw new IllegalArgumentException("connection cannot be null");
+    try {
+      if (connection == null) {
+        throw new IllegalArgumentException("connection cannot be null");
+      }
+      if (!connection.isConnected()) {
+        throw new IllegalArgumentException("connection is not connected");
+      }
+      this.receiver.handleReceivedData(connection.receive());
+    } catch (InterruptedException e) {
+      throw new RuntimeException("Not implemented handling");
     }
-    if (!connection.isConnected()) {
-      throw new IllegalArgumentException("connection is not connected");
-    }
-    this.receiver.handleReceivedData(connection.receive());
   }
 
   /**
@@ -91,21 +94,6 @@ public class Client implements DataBroadcaster, Runnable, ConnectionHandler {
         connection.close();
       } catch (Exception e) {
         e.printStackTrace();
-      }
-    }
-  }
-
-  /**
-   * Runs this client to start handling received data.
-   */
-  @Override
-  public void run() {
-    while (running) {
-      for (Connection conn : connections) {
-        byte[] data;
-        while ((data = conn.receive()) != null) {
-          receiver.handleReceivedData(data);
-        }
       }
     }
   }

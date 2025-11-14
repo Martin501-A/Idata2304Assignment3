@@ -15,7 +15,7 @@ public class Remote {
    * Instantiates a new Remote.
    */
   public Remote() {
-    setCurrentChannel(Channel.NONE.toString());
+    this.currentChannel = Channel.NONE.toString();
     subscribers = new ArrayList<>();
   }
 
@@ -29,6 +29,7 @@ public class Remote {
       throw new IllegalArgumentException("Channel cannot be null");
     }
     this.currentChannel = channel;
+    updateSubscribers();
   }
 
   /**
@@ -48,6 +49,15 @@ public class Remote {
       throw new IllegalArgumentException("Subscriber cannot be null");
     }
     this.subscribers.add(subscriber);
+  }
+
+  /**
+   * Updates Subscribers.
+   */
+  public void updateSubscribers() {
+    for (RemoteSubscriber subscriber: subscribers) {
+      subscriber.update();
+    }
   }
 }
 

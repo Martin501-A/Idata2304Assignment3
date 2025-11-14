@@ -85,6 +85,10 @@ public class Server implements DataBroadcaster, Runnable, ConnectionHandler {
    */
   @Override
   public synchronized void handle(Connection connection) {
-    handler.handleReceivedData(connection.receive());
+    try {
+      handler.handleReceivedData(connection.receive());
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 }

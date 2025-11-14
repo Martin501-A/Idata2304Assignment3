@@ -14,8 +14,8 @@ import java.util.Arrays;
  * Represents some visual for the Server as well as a way to start it.
  */
 public class ServerFront implements TVSubscriber {
-  private TV tv;
-  private Server  server;
+  private final TV tv;
+  private final Server server;
 
   /**
    * Server obj.

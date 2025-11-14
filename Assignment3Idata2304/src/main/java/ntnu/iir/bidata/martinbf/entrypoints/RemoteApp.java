@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntnu.iir.bidata.martinbf.entity.Remote;
+import ntnu.iir.bidata.martinbf.entity.RemoteSubscriber;
 import ntnu.iir.bidata.martinbf.logic.TVMessage;
 import ntnu.iir.bidata.martinbf.logic.client.Client;
 import ntnu.iir.bidata.martinbf.logic.connection.Connection;
@@ -26,7 +27,7 @@ import java.util.Scanner;
 /**
  * Main class for the Remote Application.
  */
-public class RemoteApp extends Application {
+public class RemoteApp extends Application implements RemoteSubscriber {
 
   private final TextField channelField = new TextField();
   private Remote remote;
@@ -63,7 +64,7 @@ public class RemoteApp extends Application {
     Client client = new Client(createConnections(addresses), handler);
     DataSender<TVMessage> sender = new RemoteCommandSender(client);
     RemoteCommandController controller = new RemoteCommandController(sender);
-
+    remote.subscribe(this);
     // Buttons
     Button powerButton = new Button("Power");
     Button channelUpButton = new Button("Channel +");
@@ -72,9 +73,9 @@ public class RemoteApp extends Application {
     powerButton.setOnAction(e -> controller.sendPower());
     channelUpButton.setOnAction(e -> controller.sendChannelUp());
     channelDownButton.setOnAction(e -> controller.sendChannelDown());
-    /*
-    channelField.textProperty().bind(() -> {});
-    */
+
+    channelField.setText("!");
+
     VBox root = new VBox(10, powerButton, channelUpButton, channelDownButton, channelField);
     root.setStyle("-fx-padding: 10; -fx-font-size: 14;");
 
@@ -84,6 +85,8 @@ public class RemoteApp extends Application {
 
     // Start remote client
     client.start();
+
+
   }
 
   private List<Connection> createConnections(List<InetSocketAddress> addresses) {
@@ -93,5 +96,10 @@ public class RemoteApp extends Application {
       cons.add(factory.createTCPConnection(address)); //TCP or UDP here.
     }
     return cons;
+  }
+
+  @Override
+  public void update() {
+    this.channelField.setText(remote.getCurrentChannel());
   }
 }

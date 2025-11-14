@@ -77,8 +77,8 @@ public abstract class Connection implements Runnable, AutoCloseable {
    *
    * @return the received data, or null if no data is available
    */
-  public byte[] receive() {
-    return incomingQueue.poll();
+  public byte[] receive() throws InterruptedException {
+    return incomingQueue.take();
   }
 
   /**
