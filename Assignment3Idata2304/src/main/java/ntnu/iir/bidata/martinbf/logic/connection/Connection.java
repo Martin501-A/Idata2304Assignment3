@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.*;
 
 /**
  * Represents a network connection. It automatically handles data transmission.
@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author martin barth frøseth
  */
 public abstract class Connection implements Runnable, AutoCloseable {
-  protected final Queue<byte[]> outgoingQueue;
-  protected final Queue<byte[]> incomingQueue;
+  protected final BlockingQueue<byte[]> outgoingQueue;
+  protected final BlockingQueue<byte[]> incomingQueue;
   protected SocketAddress address;
   protected ConnectionHandler handler;
 
@@ -26,8 +26,8 @@ public abstract class Connection implements Runnable, AutoCloseable {
     if (address == null) {
       throw new IllegalArgumentException("Address cannot be null");
     }
-    this.outgoingQueue = new ConcurrentLinkedQueue<>();
-    this.incomingQueue = new ConcurrentLinkedQueue<>();
+    this.outgoingQueue = new LinkedBlockingQueue<>();
+    this.incomingQueue = new LinkedBlockingQueue<>();
     this.address = address;
     this.handler = null;
   }
@@ -70,15 +70,7 @@ public abstract class Connection implements Runnable, AutoCloseable {
    * Runs the connection loop while connected.
    */
   @Override
-  public void run() {
-    try {
-      while (isConnected()) {
-        step();
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+  public abstract void run();
 
   /**
    * Receives data from the connection.
@@ -112,19 +104,6 @@ public abstract class Connection implements Runnable, AutoCloseable {
       throw new IllegalCallerException("Cannot change address while connection is running");
     }
     this.address = address;
-  }
-
-  /**
-   * Runs one step of the connection loop.
-   * Handles input and output.
-   */
-  protected void step() throws IOException {
-    //Maybe handle exceptions here.
-    if (!isConnected()) {
-      throw new IllegalCallerException("Cannot step whilst not connected");
-    }
-      handleIncomingData();
-      handleOutgoingData();
   }
 
   /**

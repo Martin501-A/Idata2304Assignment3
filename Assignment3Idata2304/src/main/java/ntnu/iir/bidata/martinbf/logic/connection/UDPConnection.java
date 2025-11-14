@@ -116,5 +116,11 @@ public class UDPConnection extends Connection {
     socket.send(packet);
   }
 
-
+  /**
+   * Implement for UDP
+   */
+  @Override
+  public void run() {
+    throw new IllegalCallerException("Not implemented run function for UDPConnection");
+  }
 }
